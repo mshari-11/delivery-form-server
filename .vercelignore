@@ -1,0 +1,15 @@
+node_modules
+.git
+*.log
+.env
+server.js
+uploads/
+delivery_system.db
+*.py
+*.bat
+*.sh
+README*.md
+.vscode/
+.settings/
+*.zip
+*.exe
