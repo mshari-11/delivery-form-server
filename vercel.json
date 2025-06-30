@@ -1,0 +1,46 @@
+{
+  "version": 2,
+  "name": "first-line-delivery-form",
+  "alias": ["delivery-form", "first-line-logistics"],
+  "public": true,
+  "builds": [
+    {
+      "src": "server.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "public/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/server.js"
+    },
+    {
+      "src": "/uploads/(.*)",
+      "dest": "/uploads/$1"
+    },
+    {
+      "src": "/(.*\\.(css|js|ico|png|jpg|jpeg|svg))",
+      "dest": "/public/$1"
+    },
+    {
+      "src": "/",
+      "dest": "/public/form-complete.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/public/$1"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "functions": {
+    "server.js": {
+      "maxDuration": 30
+    }
+  }
+}
