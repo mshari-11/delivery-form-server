@@ -1,5 +1,9 @@
 {
   "rewrites": [
     { "source": "/", "destination": "/form-complete.html" }
-  ]
+  ],
+  "git": {
+    "push": "origin",
+    "branch": "main"
+  }
 }
