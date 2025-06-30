@@ -1,8 +1,25 @@
 {
+  "functions": {
+    "public/form-complete.html": {
+      "memory": 128
+    }
+  },
   "rewrites": [
     {
       "source": "/",
       "destination": "/public/form-complete.html"
+    },
+    {
+      "source": "/form-complete.html",
+      "destination": "/public/form-complete.html"
+    },
+    {
+      "source": "/dashboard.html",
+      "destination": "/public/dashboard.html"
+    },
+    {
+      "source": "/login.html", 
+      "destination": "/public/login.html"
     },
     {
       "source": "/(.*)",
