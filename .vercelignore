@@ -1,15 +1,39 @@
-node_modules
-.git
+# Node.js dependencies
+node_modules/
+
+# Local development files
+.env*
+
+# Cache directories
+.cache/
+.parcel-cache/
+
+# IDE files
+.vscode/
+.idea/
+.settings/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Git files
+.git/
+
+# Log files
 *.log
-.env
-server.js
-uploads/
-delivery_system.db
-*.py
+
+# Deployment scripts
 *.bat
 *.sh
+
+# Documentation
 README*.md
-.vscode/
-.settings/
+*.md
+
+# Development utilities
 *.zip
 *.exe
+
+# Python files
+*.py
