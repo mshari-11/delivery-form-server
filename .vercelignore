@@ -33,3 +33,6 @@ build
 # Docs
 README*.md
 *.md
+
+# Python files (keep in repo but ignore for deployment)
+requirements.txt
