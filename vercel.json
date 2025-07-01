@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "name": "delivery-form-mshari",
   "builds": [
     {
       "src": "api/index.js",
@@ -20,7 +21,7 @@
       "dest": "/api/index.js"
     },
     {
-      "src": "/(.*\\.(css|js|png|jpg|jpeg|gif|ico|svg|pdf))",
+      "src": "/(.*\\.(css|js|png|jpg|jpeg|gif|ico|svg|pdf|html))",
       "dest": "/public/$1"
     },
     {
@@ -36,10 +37,6 @@
       "dest": "/api/index.js"
     },
     {
-      "src": "/index.html",
-      "dest": "/api/index.js"
-    },
-    {
       "src": "/dashboard",
       "dest": "/api/index.js"
     },
@@ -50,10 +47,11 @@
     {
       "src": "/",
       "dest": "/api/index.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/api/index.js"
     }
-  ]
+  ],
+  "functions": {
+    "api/index.js": {
+      "maxDuration": 30
+    }
+  }
 }

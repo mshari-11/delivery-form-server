@@ -4,9 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const cors = require('cors');
-const session = require('express-session');
 const XLSX = require('xlsx');
-const { v4: uuidv4 } = require('uuid');
 const moment = require('moment');
 const path = require('path');
 const fs = require('fs');
@@ -14,32 +12,18 @@ const fs = require('fs');
 const app = express();
 const JWT_SECRET = 'FirstLineLogistics2025SecretKey';
 
-// إعدادات Middleware
+// Middleware
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
-// إعدادات الجلسة
-app.use(session({
-  secret: JWT_SECRET,
-  resave: false,
-  saveUninitialized: false,
-  cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000 }
-}));
-
-// إعدادات رفع الملفات (في الذاكرة للـ serverless)
+// In-memory file storage for serverless
 const storage = multer.memoryStorage();
 const upload = multer({ 
   storage: storage,
   limits: { fileSize: 10 * 1024 * 1024 },
   fileFilter: function (req, file, cb) {
-    let allowedTypes;
-    if (file.fieldname === 'facePhoto') {
-      allowedTypes = /jpeg|jpg|png/;
-    } else {
-      allowedTypes = /jpeg|jpg|png|pdf/;
-    }
-    
+    const allowedTypes = /jpeg|jpg|png|pdf/;
     const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
     const mimetype = allowedTypes.test(file.mimetype);
     
@@ -51,28 +35,25 @@ const upload = multer({
   }
 });
 
-// قاعدة البيانات في الذاكرة للـ serverless
+// In-memory database for serverless
 let db;
 function initDatabase() {
   if (!db) {
     db = new sqlite3.Database(':memory:');
     
     db.serialize(() => {
-      // جدول المستخدمين
+      // Users table
       db.run(`CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT UNIQUE NOT NULL,
         password TEXT NOT NULL,
         fullName TEXT NOT NULL,
-        email TEXT,
         role TEXT DEFAULT 'employee',
-        department TEXT,
         isActive INTEGER DEFAULT 1,
-        lastLogin DATETIME,
         createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
       )`);
 
-      // جدول تسجيل المناديب
+      // Delivery registrations table
       db.run(`CREATE TABLE IF NOT EXISTS delivery_registrations (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         formNumber TEXT UNIQUE NOT NULL,
@@ -82,43 +63,25 @@ function initDatabase() {
         stcPayNumber TEXT NOT NULL,
         selectedApp TEXT NOT NULL,
         isPhoneVerified INTEGER DEFAULT 0,
-        verificationCode TEXT,
-        verificationTime DATETIME,
         idCopyFile TEXT,
         licenseCopyFile TEXT,
         facePhotoFile TEXT,
-        registeredBy INTEGER,
         ipAddress TEXT,
         userAgent TEXT,
         status TEXT DEFAULT 'pending',
-        notes TEXT,
-        createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-        updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (registeredBy) REFERENCES users (id)
+        createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
       )`);
 
-      // جدول سجل العمليات
-      db.run(`CREATE TABLE IF NOT EXISTS activity_logs (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        userId INTEGER,
-        action TEXT NOT NULL,
-        target TEXT,
-        details TEXT,
-        ipAddress TEXT,
-        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (userId) REFERENCES users (id)
-      )`);
-
-      // إنشاء مستخدم افتراضي
+      // Create default admin user
       const defaultPassword = bcrypt.hashSync('admin123', 10);
-      db.run(`INSERT OR IGNORE INTO users (username, password, fullName, role, department) 
-              VALUES ('admin', ?, 'مدير النظام', 'admin', 'الإدارة')`, [defaultPassword]);
+      db.run(`INSERT OR IGNORE INTO users (username, password, fullName, role) 
+              VALUES ('admin', ?, 'مدير النظام', 'admin')`, [defaultPassword]);
     });
   }
   return db;
 }
 
-// دالة التحقق من المصادقة
+// Authentication middleware
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
@@ -136,21 +99,14 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
-// دالة تسجيل الأنشطة
-const logActivity = (userId, action, target, details, ipAddress) => {
-  const db = initDatabase();
-  db.run(`INSERT INTO activity_logs (userId, action, target, details, ipAddress) 
-          VALUES (?, ?, ?, ?, ?)`, [userId, action, target, details, ipAddress]);
-};
-
 // Routes
 
-// الصفحة الرئيسية
+// Home page
 app.get('/', (req, res) => {
   res.redirect('/form-complete.html');
 });
 
-// إعادة توجيه الملفات HTML
+// Serve HTML files
 app.get('/form-complete.html', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/form-complete.html'));
 });
@@ -163,11 +119,6 @@ app.get('/login.html', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/login.html'));
 });
 
-app.get('/index.html', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/index.html'));
-});
-
-// صفحات أخرى
 app.get('/dashboard', (req, res) => {
   res.redirect('/dashboard.html');
 });
@@ -176,7 +127,9 @@ app.get('/login', (req, res) => {
   res.redirect('/login.html');
 });
 
-// تسجيل الدخول
+// API Routes
+
+// Login
 app.post('/api/login', (req, res) => {
   const db = initDatabase();
   const { username, password } = req.body;
@@ -200,10 +153,6 @@ app.post('/api/login', (req, res) => {
       });
     }
 
-    // تحديث آخر تسجيل دخول
-    db.run('UPDATE users SET lastLogin = CURRENT_TIMESTAMP WHERE id = ?', [user.id]);
-
-    // إنشاء رمز المصادقة
     const token = jwt.sign(
       { 
         id: user.id, 
@@ -215,9 +164,6 @@ app.post('/api/login', (req, res) => {
       { expiresIn: '24h' }
     );
 
-    // تسجيل النشاط
-    logActivity(user.id, 'login', 'system', 'تسجيل دخول ناجح', req.ip);
-
     res.json({
       success: true,
       message: 'تم تسجيل الدخول بنجاح',
@@ -226,14 +172,13 @@ app.post('/api/login', (req, res) => {
         id: user.id,
         username: user.username,
         fullName: user.fullName,
-        role: user.role,
-        department: user.department
+        role: user.role
       }
     });
   });
 });
 
-// تسجيل مندوب جديد
+// Register delivery person
 app.post('/api/register', upload.fields([
   { name: 'idCopy', maxCount: 1 },
   { name: 'licenseCopy', maxCount: 1 },
@@ -252,7 +197,7 @@ app.post('/api/register', upload.fields([
       isPhoneVerified
     } = req.body;
 
-    // التحقق من البيانات المطلوبة
+    // Validate required fields
     if (!fullName || !idNumber || !mobileNumber || !selectedApp || !stcPayNumber) {
       return res.status(400).json({ 
         success: false, 
@@ -260,7 +205,7 @@ app.post('/api/register', upload.fields([
       });
     }
 
-    // التحقق من التحقق الرقمي
+    // Check phone verification
     if (!isPhoneVerified || isPhoneVerified !== 'true') {
       return res.status(400).json({ 
         success: false, 
@@ -268,7 +213,7 @@ app.post('/api/register', upload.fields([
       });
     }
 
-    // معالجة الملفات (حفظ في قاعدة البيانات كـ base64)
+    // Process uploaded files
     let idCopyData = null, licenseCopyData = null, facePhotoData = null;
     
     if (req.files['idCopy']) {
@@ -288,7 +233,7 @@ app.post('/api/register', upload.fields([
       });
     }
 
-    // إدراج البيانات في قاعدة البيانات
+    // Insert into database
     const sql = `INSERT INTO delivery_registrations 
       (formNumber, fullName, idNumber, mobileNumber, stcPayNumber, selectedApp, 
        isPhoneVerified, idCopyFile, licenseCopyFile, facePhotoFile, 
@@ -296,19 +241,9 @@ app.post('/api/register', upload.fields([
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
     const values = [
-      formNumber,
-      fullName,
-      idNumber,
-      mobileNumber,
-      stcPayNumber,
-      selectedApp,
-      1,
-      idCopyData,
-      licenseCopyData,
-      facePhotoData,
-      req.ip,
-      req.get('User-Agent'),
-      'pending'
+      formNumber, fullName, idNumber, mobileNumber, stcPayNumber, selectedApp,
+      1, idCopyData, licenseCopyData, facePhotoData,
+      req.ip, req.get('User-Agent'), 'pending'
     ];
 
     db.run(sql, values, function(err) {
@@ -319,10 +254,6 @@ app.post('/api/register', upload.fields([
           message: 'خطأ في حفظ البيانات' 
         });
       }
-
-      // تسجيل النشاط
-      logActivity(null, 'registration', 'delivery_registrations', 
-        `تسجيل مندوب جديد: ${fullName}`, req.ip);
 
       res.json({
         success: true,
@@ -347,7 +278,7 @@ app.post('/api/register', upload.fields([
   }
 });
 
-// جلب جميع التسجيلات
+// Get all registrations
 app.get('/api/registrations', authenticateToken, (req, res) => {
   const db = initDatabase();
   
@@ -359,11 +290,12 @@ app.get('/api/registrations', authenticateToken, (req, res) => {
     res.json({
       success: true,
       registrations: registrations,
+      total: registrations.length
     });
   });
 });
 
-// جلب الإحصائيات
+// Get statistics
 app.get('/api/statistics', authenticateToken, (req, res) => {
   const db = initDatabase();
   
@@ -396,7 +328,7 @@ app.get('/api/statistics', authenticateToken, (req, res) => {
   });
 });
 
-// تحديث حالة التسجيل
+// Update registration status
 app.put('/api/registrations/:id/status', authenticateToken, (req, res) => {
   const db = initDatabase();
   const id = req.params.id;
@@ -406,7 +338,7 @@ app.put('/api/registrations/:id/status', authenticateToken, (req, res) => {
     return res.status(400).json({ success: false, message: 'حالة غير صحيحة' });
   }
   
-  db.run('UPDATE delivery_registrations SET status = ?, updatedAt = CURRENT_TIMESTAMP WHERE id = ?', 
+  db.run('UPDATE delivery_registrations SET status = ? WHERE id = ?', 
     [status, id], function(err) {
     if (err) {
       return res.status(500).json({ success: false, message: 'خطأ في تحديث البيانات' });
@@ -416,15 +348,11 @@ app.put('/api/registrations/:id/status', authenticateToken, (req, res) => {
       return res.status(404).json({ success: false, message: 'التسجيل غير موجود' });
     }
     
-    // تسجيل النشاط
-    logActivity(req.user.id, 'status_update', 'delivery_registrations', 
-      `تحديث حالة التسجيل رقم ${id} إلى ${status}`, req.ip);
-    
     res.json({ success: true, message: 'تم تحديث الحالة بنجاح' });
   });
 });
 
-// تصدير البيانات إلى Excel
+// Export to Excel
 app.get('/api/export-excel', authenticateToken, (req, res) => {
   const db = initDatabase();
   
@@ -434,7 +362,6 @@ app.get('/api/export-excel', authenticateToken, (req, res) => {
     }
 
     try {
-      // إعداد البيانات للتصدير
       const exportData = registrations.map(reg => ({
         'رقم التسجيل': reg.formNumber,
         'الاسم الكامل': reg.fullName,
@@ -447,7 +374,6 @@ app.get('/api/export-excel', authenticateToken, (req, res) => {
         'تاريخ التسجيل': moment(reg.createdAt).format('YYYY-MM-DD HH:mm:ss')
       }));
 
-      // إنشاء ملف Excel
       const wb = XLSX.utils.book_new();
       const ws = XLSX.utils.json_to_sheet(exportData);
       
@@ -459,9 +385,6 @@ app.get('/api/export-excel', authenticateToken, (req, res) => {
       res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
       res.send(buffer);
       
-      // تسجيل النشاط
-      logActivity(req.user.id, 'export', 'delivery_registrations', 'تصدير البيانات إلى Excel', req.ip);
-      
     } catch (error) {
       console.error('Export error:', error);
       res.status(500).json({ success: false, message: 'خطأ في تصدير البيانات' });
@@ -469,7 +392,7 @@ app.get('/api/export-excel', authenticateToken, (req, res) => {
   });
 });
 
-// إرسال كود التحقق
+// Send verification code
 app.post('/api/send-verification', (req, res) => {
   const { phoneNumber } = req.body;
   
@@ -499,7 +422,7 @@ app.post('/api/send-verification', (req, res) => {
   });
 });
 
-// التحقق من كود الجوال
+// Verify phone
 app.post('/api/verify-phone', (req, res) => {
   const { phoneNumber, code } = req.body;
   
@@ -554,117 +477,10 @@ app.post('/api/verify-phone', (req, res) => {
   });
 });
 
-// جلب الإحصائيات
-app.get('/api/statistics', authenticateToken, (req, res) => {
-  const db = initDatabase();
-  
-  db.serialize(() => {
-    db.get('SELECT COUNT(*) as total FROM delivery_registrations', (err, totalResult) => {
-      if (err) {
-        return res.status(500).json({ success: false, message: 'خطأ في قاعدة البيانات' });
-      }
-
-      db.get('SELECT COUNT(*) as pending FROM delivery_registrations WHERE status = "pending"', (err, pendingResult) => {
-        if (err) {
-          return res.status(500).json({ success: false, message: 'خطأ في قاعدة البيانات' });
-        }
-
-        db.get('SELECT COUNT(*) as approved FROM delivery_registrations WHERE status = "approved"', (err, approvedResult) => {
-          if (err) {
-            return res.status(500).json({ success: false, message: 'خطأ في قاعدة البيانات' });
-          }
-
-          res.json({
-            success: true,
-            total: totalResult.total,
-            pending: pendingResult.pending,
-            approved: approvedResult.approved,
-            rejected: totalResult.total - pendingResult.pending - approvedResult.approved
-          });
-        });
-      });
-    });
-  });
-});
-
-// تحديث حالة التسجيل
-app.put('/api/registrations/:id/status', authenticateToken, (req, res) => {
-  const db = initDatabase();
-  const id = req.params.id;
-  const { status } = req.body;
-  
-  if (!['pending', 'approved', 'rejected'].includes(status)) {
-    return res.status(400).json({ success: false, message: 'حالة غير صحيحة' });
-  }
-  
-  db.run('UPDATE delivery_registrations SET status = ?, updatedAt = CURRENT_TIMESTAMP WHERE id = ?', 
-    [status, id], function(err) {
-    if (err) {
-      return res.status(500).json({ success: false, message: 'خطأ في تحديث البيانات' });
-    }
-    
-    if (this.changes === 0) {
-      return res.status(404).json({ success: false, message: 'التسجيل غير موجود' });
-    }
-    
-    // تسجيل النشاط
-    logActivity(req.user.id, 'status_update', 'delivery_registrations', 
-      `تحديث حالة التسجيل رقم ${id} إلى ${status}`, req.ip);
-    
-    res.json({ success: true, message: 'تم تحديث الحالة بنجاح' });
-  });
-});
-
-// تصدير البيانات إلى Excel
-app.get('/api/export-excel', authenticateToken, (req, res) => {
-  const db = initDatabase();
-  
-  db.all('SELECT * FROM delivery_registrations ORDER BY createdAt DESC', (err, registrations) => {
-    if (err) {
-      return res.status(500).json({ success: false, message: 'خطأ في قاعدة البيانات' });
-    }
-
-    try {
-      // إعداد البيانات للتصدير
-      const exportData = registrations.map(reg => ({
-        'رقم التسجيل': reg.formNumber,
-        'الاسم الكامل': reg.fullName,
-        'رقم الهوية': reg.idNumber,
-        'رقم الجوال': reg.mobileNumber,
-        'رقم STC Pay': reg.stcPayNumber,
-        'التطبيق': reg.selectedApp,
-        'التحقق من الجوال': reg.isPhoneVerified ? 'تم' : 'لم يتم',
-        'الحالة': reg.status,
-        'تاريخ التسجيل': moment(reg.createdAt).format('YYYY-MM-DD HH:mm:ss')
-      }));
-
-      // إنشاء ملف Excel
-      const wb = XLSX.utils.book_new();
-      const ws = XLSX.utils.json_to_sheet(exportData);
-      
-      XLSX.utils.book_append_sheet(wb, ws, 'تسجيلات المناديب');
-      
-      const buffer = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' });
-      
-      res.setHeader('Content-Disposition', 'attachment; filename=delivery-registrations.xlsx');
-      res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-      res.send(buffer);
-      
-      // تسجيل النشاط
-      logActivity(req.user.id, 'export', 'delivery_registrations', 'تصدير البيانات إلى Excel', req.ip);
-      
-    } catch (error) {
-      console.error('Export error:', error);
-      res.status(500).json({ success: false, message: 'خطأ في تصدير البيانات' });
-    }
-  });
-});
-
-// endpoint لعرض الملفات المرفوعة
+// File serving endpoint
 app.get('/uploads/:type/:filename', (req, res) => {
   const { type, filename } = req.params;
   
-  // البحث في قاعدة البيانات عن الملف
   const db = initDatabase();
   let fileColumn;
   
@@ -692,7 +508,6 @@ app.get('/uploads/:type/:filename', (req, res) => {
       const base64Data = row[fileColumn];
       const buffer = Buffer.from(base64Data, 'base64');
       
-      // تحديد نوع الملف
       const ext = path.extname(filename).toLowerCase();
       let contentType = 'application/octet-stream';
       

@@ -1,15 +1,13 @@
 {
-  "name": "first-line-delivery-form",
-  "version": "2.1.0",
-  "description": "نظام تسجيل مناديب التوصيل مع صلاحيات متقدمة وأيقونات محسنة - شركة الخط الأول",
-  "main": "server.js",
+  "name": "delivery-form-mshari",
+  "version": "3.0.0",
+  "description": "نظام تسجيل مناديب التوصيل - شركة الخط الأول",
+  "main": "api/index.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js",
-    "build": "echo 'Build completed successfully'",
-    "vercel-build": "echo 'Vercel build completed'",
-    "deploy": "vercel --prod",
-    "test": "echo 'No tests specified'"
+    "start": "node api/index.js",
+    "dev": "nodemon api/index.js",
+    "build": "echo Build completed",
+    "deploy": "vercel --prod"
   },
   "dependencies": {
     "express": "^4.18.2",
@@ -29,13 +27,9 @@
   "keywords": [
     "delivery",
     "registration",
-    "logistics",
-    "first-line",
-    "icons",
-    "permissions",
     "vercel",
-    "node.js"
+    "nodejs"
   ],
-  "author": "شركة الخط الأول للخدمات اللوجستية",
+  "author": "First Line Logistics",
   "license": "ISC"
 }
