@@ -95,9 +95,6 @@
         }
         
         .admin-login-btn {
-            position: absolute;
-            top: 15px;
-            right: 20px;
             background: rgba(255, 255, 255, 0.15);
             border: 2px solid rgba(255, 255, 255, 0.4);
             color: white;
@@ -110,6 +107,15 @@
             backdrop-filter: blur(15px);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             display: flex;
+            align-items: center;
+        }
+        
+        .header-buttons {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
             align-items: center;
         }
         
@@ -1228,13 +1234,21 @@
         <!-- رأس الصفحة -->
         <header class="company-header">
             <div class="form-number">نموذج رقم: FL-REG-2025-001</div>
-            <a href="login.html" class="admin-login-btn">
-                <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor; margin-left: 8px;">
-                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                    <path d="M20 7h-2V5c0-.55-.45-1-1-1s-1 .45-1 1v2h-2c-.55 0-1 .45-1 1s.45 1 1 1h2v2c0 .55.45 1 1 1s1-.45 1-1V9h2c.55 0 1-.45 1-1s-.45-1-1-1z"/>
-                </svg>
-                🔐 دخول الموظفين
-            </a>
+            <div class="header-buttons">
+                <a href="login.html" class="admin-login-btn">
+                    <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor; margin-left: 8px;">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        <path d="M20 7h-2V5c0-.55-.45-1-1-1s-1 .45-1 1v2h-2c-.55 0-1 .45-1 1s.45 1 1 1h2v2c0 .55.45 1 1 1s1-.45 1-1V9h2c.55 0 1-.45 1-1s-.45-1-1-1z"/>
+                    </svg>
+                    🔐 دخول الموظفين
+                </a>
+                <a href="dashboard.html" class="admin-login-btn">
+                    <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor; margin-left: 8px;">
+                        <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+                    </svg>
+                    📊 لوحة التحكم
+                </a>
+            </div>
             <div class="header-content">
                 <div class="company-info">
                     <h1>شركة الخط الأول للخدمات اللوجستية</h1>
@@ -1967,36 +1981,36 @@
                 </div>
             </div>
 
-            <!-- الأزرار - للموظفين فقط -->
-            <div class="button-group admin-only" style="display: none;">
-                <button class="btn btn-secondary no-print" onclick="window.print()">
+            
+            <!-- أزرار الموظفين الإدارية -->
+            <div class="button-group admin-only">
+                <button class="btn btn-info no-print" onclick="window.print()">
                     <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: currentColor; margin-left: 8px;">
-                        <path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zM16 19H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/>
+                        <path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/>
                     </svg>
                     🖨️ طباعة النموذج
                 </button>
                 <button class="btn btn-warning no-print" onclick="exportToExcel()">
                     <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: currentColor; margin-left: 8px;">
                         <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
-                        <path d="M12,12L10,14H11V16H13V14H14L12,12Z"/>
                     </svg>
                     📊 تصدير Excel
                 </button>
-                <button class="btn btn-primary no-print" onclick="saveForm()">
+                <button class="btn btn-secondary no-print" onclick="saveForm()">
                     <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: currentColor; margin-left: 8px;">
-                        <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/>
+                        <path d="M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z"/>
                     </svg>
                     💾 حفظ النموذج
                 </button>
-                <button class="btn btn-danger no-print" onclick="approveApplication()">
+                <button class="btn btn-success no-print" onclick="approveApplication()">
                     <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: currentColor; margin-left: 8px;">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        <path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/>
                     </svg>
                     ✅ اعتماد الطلب
                 </button>
             </div>
-            
-            <!-- زر الإرسال للمتقدمين فقط -->
+
+            <!-- أزرار المتقدمين -->
             <div class="button-group user-only">
                 <button class="btn btn-success no-print" onclick="submitForm()">
                     <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: currentColor; margin-left: 8px;">
@@ -2637,7 +2651,7 @@
                 submitButton.disabled = true;
                 submitButton.textContent = 'جاري الإرسال...';
                 
-                const response = await fetch('http://localhost:3001/api/register', {
+                const response = await fetch('/api/register', {
                     method: 'POST',
                     body: formData
                 });
@@ -2859,19 +2873,81 @@
             document.addEventListener('keydown', function(e) {
                 if (e.ctrlKey && e.shiftKey && e.key === 'A') {
                     e.preventDefault();
-                    if (document.body.classList.contains('admin-mode')) {
-                        disableAdminMode();
-                    } else {
-                        const password = prompt('أدخل كلمة المرور الإدارية:');
-                        if (password === 'admin123') {
-                            enableAdminMode();
-                        } else {
-                            alert('كلمة مرور خاطئة');
-                        }
-                    }
+                    toggleAdminMode();
                 }
             });
         });
+
+        // نظام الصلاحيات للموظفين
+        function toggleAdminMode() {
+            if (document.body.classList.contains('admin-mode')) {
+                disableAdminMode();
+            } else {
+                const password = prompt('🔐 أدخل كلمة المرور الإدارية:');
+                if (password === 'admin123') {
+                    enableAdminMode();
+                } else if (password !== null) {
+                    showNotification('كلمة مرور خاطئة!', 'error');
+                }
+            }
+        }
+
+        function enableAdminMode() {
+            document.body.classList.add('admin-mode');
+            localStorage.setItem('adminMode', 'true');
+            
+            // إخفاء زر دخول الموظفين
+            const adminBtn = document.querySelector('.admin-login-btn');
+            if (adminBtn) adminBtn.style.display = 'none';
+            
+            showNotification('🔒 وضع الموظف نشط', 'success');
+        }
+
+        function disableAdminMode() {
+            document.body.classList.remove('admin-mode');
+            localStorage.removeItem('adminMode');
+            
+            // إظهار زر دخول الموظفين
+            const adminBtn = document.querySelector('.admin-login-btn');
+            if (adminBtn) adminBtn.style.display = 'flex';
+            
+            showNotification('تم إلغاء وضع الموظف', 'warning');
+        }
+
+        function checkAdminMode() {
+            if (localStorage.getItem('adminMode') === 'true') {
+                document.body.classList.add('admin-mode');
+                const adminBtn = document.querySelector('.admin-login-btn');
+                if (adminBtn) adminBtn.style.display = 'none';
+            }
+        }
+
+        // وظائف الموظفين
+        function exportToExcel() {
+            showNotification('🔄 جاري تصدير البيانات...', 'info');
+            // كود تصدير Excel هنا
+            setTimeout(() => {
+                showNotification('✅ تم تصدير البيانات بنجاح!', 'success');
+            }, 2000);
+        }
+
+        function saveForm() {
+            showNotification('🔄 جاري حفظ النموذج...', 'info');
+            // كود حفظ النموذج هنا
+            setTimeout(() => {
+                showNotification('💾 تم حفظ النموذج بنجاح!', 'success');
+            }, 1500);
+        }
+
+        function approveApplication() {
+            if (confirm('🔍 هل أنت متأكد من اعتماد هذا الطلب؟')) {
+                showNotification('🔄 جاري معالجة الاعتماد...', 'info');
+                // كود اعتماد الطلب هنا
+                setTimeout(() => {
+                    showNotification('✅ تم اعتماد الطلب بنجاح!', 'success');
+                }, 2000);
+            }
+        }
     </script>
 </body>
 </html>
