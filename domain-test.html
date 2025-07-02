@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار الدومين - شركة الخط الأول</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            direction: rtl;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 3px solid #1e3c72;
+        }
+        
+        .header h1 {
+            color: #1e3c72;
+            margin: 0;
+            font-size: 3em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .header p {
+            color: #666;
+            margin: 15px 0 0 0;
+            font-size: 1.5em;
+        }
+        
+        .domain-info {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+        
+        .domain-info h2 {
+            margin: 0 0 15px 0;
+            font-size: 2.5em;
+        }
+        
+        .domain-info .url {
+            font-family: 'Courier New', monospace;
+            font-size: 1.8em;
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+        
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+        
+        .link-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            color: white;
+            transition: transform 0.3s ease;
+        }
+        
+        .link-card:hover {
+            transform: translateY(-5px) scale(1.02);
+        }
+        
+        .link-card h3 {
+            margin: 0 0 15px 0;
+            font-size: 1.5em;
+        }
+        
+        .link-card a {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 12px 25px;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+        
+        .link-card a:hover {
+            background: rgba(255,255,255,0.3);
+            border-color: rgba(255,255,255,0.5);
+            transform: scale(1.05);
+        }
+        
+        .status-section {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+        
+        .status-item {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            font-size: 1.2em;
+        }
+        
+        .status-item .icon {
+            margin-left: 15px;
+            font-size: 1.5em;
+        }
+        
+        .dns-info {
+            background: #fff3cd;
+            border: 2px solid #ffeaa7;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+        
+        .dns-record {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 5px solid #1e3c72;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .test-buttons {
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        .test-btn {
+            display: inline-block;
+            padding: 15px 30px;
+            margin: 10px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: transform 0.3s ease;
+        }
+        
+        .test-btn:hover {
+            transform: translateY(-3px);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid #eee;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌐 اختبار الدومين المخصص</h1>
+            <p>شركة الخط الأول للخدمات اللوجستية</p>
+        </div>
+        
+        <div class="domain-info">
+            <h2>الدومين الجديد</h2>
+            <div class="url">www.firstlineon.com</div>
+            <p>يتم ربطه الآن بنظام تسجيل المناديب</p>
+        </div>
+        
+        <div class="status-section">
+            <h3 style="color: #1e3c72; margin: 0 0 20px 0;">📊 حالة الربط</h3>
+            <div class="status-item">
+                <span class="icon">⏳</span>
+                <span>في انتظار إعداد DNS Records</span>
+            </div>
+            <div class="status-item">
+                <span class="icon">🔧</span>
+                <span>Vercel Dashboard قيد الإعداد</span>
+            </div>
+            <div class="status-item">
+                <span class="icon">🌐</span>
+                <span>انتشار DNS: 5-30 دقيقة</span>
+            </div>
+        </div>
+        
+        <div class="dns-info">
+            <h3 style="color: #856404; margin: 0 0 20px 0;">⚙️ DNS Records المطلوبة</h3>
+            
+            <div class="dns-record">
+                <strong>A Record:</strong><br>
+                Name: @ | Value: 76.76.19.19
+            </div>
+            
+            <div class="dns-record">
+                <strong>CNAME Record:</strong><br>
+                Name: www | Value: cname.vercel-dns.com
+            </div>
+        </div>
+        
+        <div class="links-grid">
+            <div class="link-card">
+                <h3>🏠 الموقع الحالي</h3>
+                <a href="https://delivery-form-mshari.vercel.app" target="_blank">زيارة الآن</a>
+            </div>
+            
+            <div class="link-card">
+                <h3>⚙️ Vercel Dashboard</h3>
+                <a href="https://vercel.com/dashboard" target="_blank">إعداد الدومين</a>
+            </div>
+            
+            <div class="link-card">
+                <h3>📋 دليل الإعداد</h3>
+                <a href="#" onclick="window.open('domain-setup-guide.md')">قراءة الدليل</a>
+            </div>
+            
+            <div class="link-card">
+                <h3>🧪 اختبار DNS</h3>
+                <a href="https://www.whatsmydns.net/#A/firstlineon.com" target="_blank">فحص الانتشار</a>
+            </div>
+        </div>
+        
+        <div class="test-buttons">
+            <a href="javascript:testDomain()" class="test-btn">🔍 اختبار الدومين الآن</a>
+            <a href="javascript:copyDNS()" class="test-btn">📋 نسخ DNS Records</a>
+        </div>
+        
+        <div class="footer">
+            <p>بعد إتمام إعداد DNS، ستكون الروابط التالية متاحة:</p>
+            <p>
+                <strong>www.firstlineon.com</strong> | 
+                <strong>www.firstlineon.com/login</strong> | 
+                <strong>www.firstlineon.com/dashboard</strong>
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        function testDomain() {
+            const domain = 'www.firstlineon.com';
+            const testUrl = `https://${domain}`;
+            
+            // فتح الدومين في تبويب جديد
+            window.open(testUrl, '_blank');
+            
+            // عرض رسالة
+            setTimeout(() => {
+                alert('تم فتح الدومين في تبويب جديد.\nإذا لم يعمل، تأكد من إعداد DNS Records أولاً.');
+            }, 1000);
+        }
+        
+        function copyDNS() {
+            const dnsText = `DNS Records للدومين firstlineon.com:
+
+A Record:
+Name: @
+Value: 76.76.19.19
+
+CNAME Record:  
+Name: www
+Value: cname.vercel-dns.com`;
+            
+            navigator.clipboard.writeText(dnsText).then(() => {
+                alert('تم نسخ DNS Records!\nالصقها في لوحة تحكم مزود النطاق.');
+            });
+        }
+        
+        // التحقق من حالة الدومين كل 30 ثانية
+        setInterval(() => {
+            fetch('https://www.firstlineon.com', {mode: 'no-cors'})
+                .then(() => {
+                    const statusItems = document.querySelectorAll('.status-item');
+                    statusItems.forEach(item => {
+                        if (item.textContent.includes('انتظار')) {
+                            item.innerHTML = '<span class="icon">✅</span><span>تم ربط الدومين بنجاح!</span>';
+                        }
+                    });
+                })
+                .catch(() => {
+                    // لا يزال قيد الانتظار
+                });
+        }, 30000);
+    </script>
+</body>
+</html>
