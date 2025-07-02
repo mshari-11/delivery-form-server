@@ -1,0 +1,21 @@
+modules = ["web", "nodejs-20", "python-3.12", "bash", "dotnet-7.0", "cpp-clang14", "nodejs-23", "nodejs-22", "python-base-3.13", "python-with-prybar-3.10"]
+run = "npm run dev"
+
+[nix]
+channel = "stable-24_05"
+packages = ["cargo", "freetype", "geckodriver", "glibcLocales", "libiconv", "libxcrypt", "openssl", "pkg-config", "rustc"]
+
+[deployment]
+run = ["sh", "-c", "node server.js"]
+
+[workflows]
+runButton = "Production Server"
+
+[[workflows.workflow]]
+name = "Production Server"
+author = 44203356
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node server.js"
