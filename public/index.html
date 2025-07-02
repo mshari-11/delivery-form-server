@@ -837,170 +837,48 @@
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                     <div class="form-group">
                         <label>نوع المركبة <span class="required">*</span></label>
-                        <select name="vehicleType" required>
+                        <select name="vehicleType" required onchange="toggleVehicleFields()">
                             <option value="">-- اختر نوع المركبة --</option>
                             <option value="motorcycle">دراجة نارية</option>
                             <option value="car">سيارة</option>
-                            <option value="bicycle">دراجة هوائية</option>
+                            <option value="none">لا أمتلك مركبة</option>
                         </select>
                     </div>
                     
-                    <div class="form-group">
+                    <div class="form-group vehicle-field">
                         <label>ماركة المركبة <span class="required">*</span></label>
                         <input type="text" name="vehicleBrand" required placeholder="مثال: تويوتا، هوندا">
                     </div>
                 </div>
                 
                 <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
-                    <div class="form-group">
+                    <div class="form-group vehicle-field">
                         <label>موديل المركبة <span class="required">*</span></label>
                         <input type="text" name="vehicleModel" required placeholder="مثال: كامري، سيفيك">
                     </div>
                     
-                    <div class="form-group">
+                    <div class="form-group vehicle-field">
                         <label>سنة الصنع <span class="required">*</span></label>
                         <input type="number" name="vehicleYear" required min="2000" max="2024" placeholder="2020">
                     </div>
                     
-                    <div class="form-group">
+                    <div class="form-group vehicle-field">
                         <label>لون المركبة <span class="required">*</span></label>
                         <input type="text" name="vehicleColor" required placeholder="أبيض، أسود، إلخ">
                     </div>
                 </div>
                 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                    <div class="form-group">
+                <div style="display: grid; grid-template-columns: 1fr; gap: 20px;">
+                    <div class="form-group vehicle-field">
                         <label>رقم اللوحة <span class="required">*</span></label>
                         <input type="text" name="plateNumber" required placeholder="أ ب ج 123">
                     </div>
-                    
-                    <div class="form-group">
-                        <label>رقم رخصة التشغيل <span class="required">*</span></label>
-                        <input type="text" name="operatingLicense" required>
-                    </div>
                 </div>
             </div>
             
-            <!-- الخبرة المهنية -->
-            <div class="section">
-                <div class="section-header">
-                    <div class="section-icon">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M10,2H14A2,2 0 0,1 16,4V6H20A2,2 0 0,1 22,8V19A2,2 0 0,1 20,21H4C2.89,21 2,20.1 2,19V8C2,6.89 2.89,6 4,6H8V4C8,2.89 8.89,2 10,2M14,6V4H10V6H14Z"/>
-                        </svg>
-                    </div>
-                    <h3 class="section-title">الخبرة المهنية</h3>
-                </div>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                    <div class="form-group">
-                        <label>سنوات الخبرة في التوصيل <span class="required">*</span></label>
-                        <select name="experience" required>
-                            <option value="">-- اختر سنوات الخبرة --</option>
-                            <option value="0">بدون خبرة</option>
-                            <option value="1">سنة واحدة</option>
-                            <option value="2-3">2-3 سنوات</option>
-                            <option value="4-5">4-5 سنوات</option>
-                            <option value="5+">أكثر من 5 سنوات</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>التطبيقات التي عملت بها سابقاً</label>
-                        <input type="text" name="previousApps" placeholder="مثال: جاهز، مرسول، كريم (اختياري)">
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label>معرفة المناطق <span class="required">*</span></label>
-                    <textarea name="areaKnowledge" required placeholder="اذكر المناطق التي تعرفها جيداً في مدينتك" rows="3"></textarea>
-                </div>
-            </div>
+
             
-            <!-- معلومات إضافية -->
-            <div class="section">
-                <div class="section-header">
-                    <div class="section-icon">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z"/>
-                        </svg>
-                    </div>
-                    <h3 class="section-title">معلومات إضافية</h3>
-                </div>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                    <div class="form-group">
-                        <label>الحالة الاجتماعية <span class="required">*</span></label>
-                        <select name="maritalStatus" required>
-                            <option value="">-- اختر الحالة الاجتماعية --</option>
-                            <option value="single">أعزب</option>
-                            <option value="married">متزوج</option>
-                            <option value="divorced">مطلق</option>
-                            <option value="widowed">أرمل</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>عدد الأطفال</label>
-                        <input type="number" name="childrenCount" min="0" max="20" placeholder="0">
-                    </div>
-                </div>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                    <div class="form-group">
-                        <label>المستوى التعليمي <span class="required">*</span></label>
-                        <select name="education" required>
-                            <option value="">-- اختر المستوى التعليمي --</option>
-                            <option value="primary">ابتدائي</option>
-                            <option value="intermediate">متوسط</option>
-                            <option value="secondary">ثانوي</option>
-                            <option value="diploma">دبلوم</option>
-                            <option value="bachelor">بكالوريوس</option>
-                            <option value="master">ماجستير</option>
-                            <option value="phd">دكتوراه</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>وقت العمل المفضل <span class="required">*</span></label>
-                        <select name="preferredWorkTime" required>
-                            <option value="">-- اختر الوقت المفضل --</option>
-                            <option value="morning">صباحي (6ص-2م)</option>
-                            <option value="evening">مسائي (2م-10م)</option>
-                            <option value="night">ليلي (10م-6ص)</option>
-                            <option value="flexible">مرن (جميع الأوقات)</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label>اسم شخص للطوارئ <span class="required">*</span></label>
-                    <input type="text" name="emergencyContactName" required placeholder="الاسم الكامل">
-                </div>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                    <div class="form-group">
-                        <label>رقم هاتف شخص الطوارئ <span class="required">*</span></label>
-                        <input type="tel" name="emergencyContactPhone" required pattern="05[0-9]{8}" placeholder="05XXXXXXXX">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>صلة القرابة <span class="required">*</span></label>
-                        <select name="emergencyContactRelation" required>
-                            <option value="">-- اختر صلة القرابة --</option>
-                            <option value="father">الأب</option>
-                            <option value="mother">الأم</option>
-                            <option value="brother">الأخ</option>
-                            <option value="sister">الأخت</option>
-                            <option value="spouse">الزوج/الزوجة</option>
-                            <option value="son">الابن</option>
-                            <option value="daughter">الابنة</option>
-                            <option value="friend">صديق</option>
-                            <option value="other">أخرى</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
+
             
             <!-- السند الإذني -->
             <div id="promissorySection" class="section" style="display: none;">
@@ -1543,6 +1421,35 @@
             }
         });
         
+        
+        // التحكم في عرض حقول المركبة
+        function toggleVehicleFields() {
+            const vehicleType = document.querySelector('select[name="vehicleType"]').value;
+            const vehicleFields = document.querySelectorAll('.vehicle-field');
+            
+            if (vehicleType === 'none') {
+                // إخفاء جميع حقول المركبة ما عدا نوع المركبة
+                vehicleFields.forEach(field => {
+                    field.style.display = 'none';
+                    // إزالة required من الحقول المخفية
+                    const inputs = field.querySelectorAll('input, select');
+                    inputs.forEach(input => {
+                        input.removeAttribute('required');
+                    });
+                });
+            } else {
+                // إظهار جميع حقول المركبة
+                vehicleFields.forEach(field => {
+                    field.style.display = 'block';
+                    // إعادة إضافة required للحقول المطلوبة
+                    const inputs = field.querySelectorAll('input, select');
+                    inputs.forEach(input => {
+                        input.setAttribute('required', 'required');
+                    });
+                });
+            }
+        }
+
         // حفظ البيانات محلياً أثناء الكتابة (اختياري)
         function saveFormData() {
             const formData = new FormData(document.getElementById('deliveryForm'));
