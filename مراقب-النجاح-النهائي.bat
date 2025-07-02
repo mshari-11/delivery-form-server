@@ -36,13 +36,24 @@ if %errorlevel% equ 0 (
     goto continue_monitoring
 )
 
-:: Test 2: Get IP Address
-echo [2/4] الحصول على IP Address...
+:: Test 2: Get IP Address and verify it matches Vercel
+echo [2/4] الحصول على IP Address والتحقق من Vercel...
 for /f "tokens=2 delims= " %%i in ('nslookup www.firstlineon.com 8.8.8.8 2^>nul ^| findstr "Address:" ^| tail -1') do set ip_addr=%%i
 if defined ip_addr (
     echo       ✅ IP Address: %ip_addr%
+    
+    :: Check if IP matches expected Vercel IP range
+    echo %ip_addr% | findstr "216.15" >nul
+    if %errorlevel% equ 0 (
+        echo       ✅ IP matches Vercel range (216.15.x.x)
+        set ip_status=VERCEL_IP
+    ) else (
+        echo       ⚠️ IP doesn't match expected Vercel range
+        set ip_status=NON_VERCEL_IP
+    )
 ) else (
     echo       ⚠️ لم يتم العثور على IP Address
+    set ip_status=NO_IP
 )
 
 :: Test 3: HTTP/HTTPS Connection
