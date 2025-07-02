@@ -1,0 +1,57 @@
+===========================================
+🌐 DNS RECORDS FOR firstlineon.com
+===========================================
+
+1. A RECORD (Main Domain)
+------------------------
+Type: A
+Name: @
+Value: 76.76.19.19  
+TTL: Auto
+Priority: N/A
+
+2. CNAME RECORD (www Subdomain)
+------------------------------
+Type: CNAME
+Name: www
+Value: cname.vercel-dns.com
+TTL: Auto
+Priority: N/A
+
+3. CAA RECORD (Optional - Security)
+----------------------------------
+Type: CAA
+Name: @
+Value: 0 issue "letsencrypt.org"
+TTL: Auto
+Priority: N/A
+
+===========================================
+QUICK COPY VALUES:
+===========================================
+
+A Record Value: 76.76.19.19
+CNAME Value: cname.vercel-dns.com
+
+===========================================
+VERIFICATION TOOLS:
+===========================================
+
+1. DNS Propagation Check:
+   https://www.whatsmydns.net/#A/firstlineon.com
+
+2. DNS Lookup:
+   https://mxtoolbox.com/SuperTool.aspx?action=a%3afirstlineon.com
+
+3. SSL Test:
+   https://www.ssllabs.com/ssltest/analyze.html?d=www.firstlineon.com
+
+===========================================
+TIMING:
+===========================================
+
+- DNS Propagation: 5-30 minutes (usually)
+- Full Global Propagation: Up to 24 hours
+- SSL Certificate: Auto-generated after DNS
+
+===========================================

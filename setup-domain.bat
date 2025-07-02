@@ -1,85 +1,51 @@
+
 @echo off
 chcp 65001 >nul
-color 0B
-cls
-
-echo ╔═══════════════════════════════════════════════════════════════╗
-echo ║ 🌐 ربط الدومين المخصص: www.firstlineon.com ║
-echo ╚═══════════════════════════════════════════════════════════════╝
-
 echo.
-echo 📋 الخطوات المطلوبة:
-echo ═══════════════════════════════════════════════════════════════
-
+echo ╔════════════════════════════════════════════╗
+echo ║   🌐 إعداد الدومين المخصص firstlineon.com  ║
+echo ╚════════════════════════════════════════════╝
 echo.
-echo 1️⃣ فتح Vercel Dashboard:
-start https://vercel.com/dashboard
-
+echo 📌 الخطوات المطلوبة:
 echo.
-echo 2️⃣ اختيار المشروع:
-echo    البحث عن: delivery-form-mshari
-echo    أو البحث عن: delivery-form-server
-
+echo 1️⃣ إضافة DNS Records في لوحة تحكم الدومين:
+echo    • A Record: @ → 76.76.19.19
+echo    • CNAME: www → cname.vercel-dns.com
+echo    • CAA: @ → 0 issue "letsencrypt.org"
 echo.
-echo 3️⃣ إعدادات الدومين:
-echo    • اضغط على المشروع
-echo    • اذهب إلى: Settings → Domains
-echo    • اضغط: Add Domain
-
+echo 2️⃣ إضافة الدومين في Vercel Dashboard:
+echo    • افتح: https://vercel.com/mshari/delivery-form-mshari/settings/domains
+echo    • اضغط "Add Domain"
+echo    • أدخل: www.firstlineon.com
+echo    • اتبع التعليمات
 echo.
-echo 4️⃣ إدخال الدومين:
-echo    • اكتب: firstlineon.com
-echo    • اكتب: www.firstlineon.com
-echo    • اضغط: Add
-
+echo 3️⃣ انتظر 5-10 دقائق للتفعيل
 echo.
-echo 5️⃣ نسخ إعدادات DNS:
-echo    Vercel سيعطيك DNS records للنسخ
-echo    أو استخدم هذه القيم الجاهزة:
+echo ─────────────────────────────────────────────
 echo.
-echo    A Record:     @ → 76.76.19.19
-echo    CNAME Record: www → cname.vercel-dns.com
-
-echo.
-echo 6️⃣ فتح أدوات مساعدة:
-start domain-test.html
-timeout /t 2 >nul
-start https://www.whatsmydns.net/#A/firstlineon.com
-
-echo.
-echo ════════════════════════════════════════════════════════════════
-echo.
-echo 📌 تم فتح:
-echo    ✅ Vercel Dashboard (لإضافة الدومين)
-echo    ✅ صفحة اختبار الدومين (للمتابعة)
-echo    ✅ أداة فحص DNS (للتحقق)
-echo.
-echo 💡 نصيحة: أضف الدومين في Vercel أولاً، ثم أضف DNS Records
-echo.
-pause
-
-echo.
-echo ⏭️  الخطوة التالية:
-echo    بعد إعداد DNS، اضغط Enter للاختبار...
-pause
-
-echo.
-echo 🧪 اختبار الاتصال بالدومين...
-echo ═══════════════════════════════════════════════════════════════
-
-echo 🌐 محاولة الوصول إلى: www.firstlineon.com
-ping -n 1 www.firstlineon.com >nul 2>&1
-if %ERRORLEVEL% EQU 0 (
-    echo ✅ تم! الدومين يستجيب
+echo هل تريد فتح Vercel Dashboard الآن؟ (Y/N)
+choice /C YN /N
+if %ERRORLEVEL%==1 (
     echo.
-    echo 🚀 فتح الموقع الجديد...
-    start https://www.firstlineon.com
-    start https://www.firstlineon.com/login
-) else (
-    echo ⏳ لا يزال قيد الانتشار...
-    echo    جرب مرة أخرى خلال 10-30 دقيقة
+    echo 🌐 جاري فتح Vercel Dashboard...
+    start https://vercel.com/mshari/delivery-form-mshari/settings/domains
 )
-
 echo.
-echo ════════════════════════════════════════════════════════════════
+echo هل تريد نسخ DNS Records إلى الحافظة؟ (Y/N)
+choice /C YN /N
+if %ERRORLEVEL%==1 (
+    echo A Record: @ → 76.76.19.19 | clip
+    echo ✅ تم نسخ A Record إلى الحافظة!
+    echo.
+    pause
+    echo CNAME: www → cname.vercel-dns.com | clip
+    echo ✅ تم نسخ CNAME Record إلى الحافظة!
+    echo.
+    pause
+    echo CAA: @ → 0 issue "letsencrypt.org" | clip
+    echo ✅ تم نسخ CAA Record إلى الحافظة!
+)
+echo.
+echo 📋 للمساعدة، افتح domain-setup-guide.md
+echo.
 pause

@@ -1,0 +1,71 @@
+{
+  "name": "delivery-form-mshari",
+  "alias": [
+    "www.firstlineon.com",
+    "firstlineon.com"
+  ],
+  "domains": [
+    {
+      "domain": "firstlineon.com",
+      "redirect": "www.firstlineon.com"
+    },
+    {
+      "domain": "www.firstlineon.com",
+      "ssl": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000; includeSubDomains"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "http://firstlineon.com",
+      "destination": "https://www.firstlineon.com",
+      "permanent": true
+    },
+    {
+      "source": "https://firstlineon.com",
+      "destination": "https://www.firstlineon.com",
+      "permanent": true
+    }
+  ],
+  "notes": {
+    "dns_setup": {
+      "a_record": {
+        "type": "A",
+        "name": "@",
+        "value": "76.76.19.19",
+        "ttl": "Auto"
+      },
+      "cname_record": {
+        "type": "CNAME",
+        "name": "www",
+        "value": "cname.vercel-dns.com",
+        "ttl": "Auto"
+      }
+    },
+    "vercel_dashboard": "https://vercel.com/dashboard/delivery-form-mshari/settings/domains",
+    "current_deployment": "https://delivery-form-mshari.vercel.app",
+    "target_domain": "https://www.firstlineon.com"
+  }
+}
