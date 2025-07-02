@@ -1,0 +1,14 @@
+; DNS Zone file for firstlineon.com 
+$TTL 300 
+@ IN SOA ns1.vercel-dns.com. dns@vercel.com. ( 
+    2025070201 ; Serial 
+    3600       ; Refresh 
+    1800       ; Retry 
+    1209600    ; Expire 
+    300 )      ; Minimum TTL 
+ 
+; A Records 
+@           IN  A     76.76.19.19 
+ 
+; CNAME Records 
+www         IN  CNAME cname.vercel-dns.com. 
