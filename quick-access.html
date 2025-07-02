@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>وصول سريع - نظام تسجيل المناديب</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 40px;
+            max-width: 900px;
+            width: 100%;
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 16px;
+        }
+        
+        .sites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .site-card {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .site-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border-color: #667eea;
+        }
+        
+        .site-title {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        .site-url {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 20px;
+            word-break: break-all;
+        }
+        
+        .links-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .link-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: white;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+            transition: all 0.2s ease;
+        }
+        
+        .link-item:hover {
+            background: #f8f9fa;
+            border-color: #667eea;
+        }
+        
+        .link-item a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+        }
+        
+        .link-item a:hover {
+            color: #764ba2;
+        }
+        
+        .status {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        
+        .working {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .testing {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .credentials {
+            background: #e8f4f8;
+            border: 2px solid #b8e0ea;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .credentials h3 {
+            color: #0c5460;
+            margin-bottom: 15px;
+        }
+        
+        .cred-box {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            margin: 5px;
+            font-family: monospace;
+        }
+        
+        .note {
+            background: #fff3cd;
+            border: 2px solid #ffeaa7;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            color: #856404;
+        }
+        
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .action-btn {
+            background: #667eea;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .action-btn:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .icon {
+            font-size: 18px;
+        }
+        
+        @media (max-width: 768px) {
+            .sites-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 وصول سريع لنظام تسجيل المناديب</h1>
+        <p class="subtitle">جميع الروابط العاملة في مكان واحد</p>
+        
+        <div class="credentials">
+            <h3>🔐 بيانات الدخول للموظفين</h3>
+            <div>
+                <span class="cred-box">
+                    <span>👤</span>
+                    <span>اسم المستخدم: admin</span>
+                </span>
+                <span class="cred-box">
+                    <span>🔑</span>
+                    <span>كلمة المرور: admin123</span>
+                </span>
+            </div>
+        </div>
+        
+        <div class="note">
+            <strong>⚠️ ملاحظة هامة:</strong> إذا لم تعمل الروابط بدون .html، استخدم الروابط مع .html حتى يتم تحديث النشر على Vercel
+        </div>
+        
+        <div class="sites-grid">
+            <!-- الموقع الأول -->
+            <div class="site-card">
+                <h2 class="site-title">📌 الموقع الأول</h2>
+                <p class="site-url">delivery-form-mshari.vercel.app</p>
+                
+                <div class="links-list">
+                    <div class="link-item">
+                        <a href="https://delivery-form-mshari.vercel.app/" target="_blank">
+                            <span class="icon">🏠</span>
+                            <span>الصفحة الرئيسية</span>
+                        </a>
+                        <span class="status working">يعمل</span>
+                    </div>
+                    
+                    <div class="link-item">
+                        <a href="https://delivery-form-mshari.vercel.app/login" target="_blank">
+                            <span class="icon">🔐</span>
+                            <span>تسجيل الدخول</span>
+                        </a>
+                        <span class="status testing">اختبار</span>
+                    </div>
+                    
+                    <div class="link-item">
+                        <a href="https://delivery-form-mshari.vercel.app/login.html" target="_blank">
+                            <span class="icon">🔐</span>
+                            <span>تسجيل الدخول (.html)</span>
+                        </a>
+                        <span class="status working">يعمل</span>
+                    </div>
+                    
+                    <div class="link-item">
+                        <a href="https://delivery-form-mshari.vercel.app/dashboard" target="_blank">
+                            <span class="icon">📊</span>
+                            <span>لوحة التحكم</span>
+                        </a>
+                        <span class="status testing">اختبار</span>
+                    </div>
+                    
+                    <div class="link-item">
+                        <a href="https://delivery-form-mshari.vercel.app/dashboard.html" target="_blank">
+                            <span class="icon">📊</span>
+                            <span>لوحة التحكم (.html)</span>
+                        </a>
+                        <span class="status working">يعمل</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- الموقع الثاني -->
+            <div class="site-card">
+                <h2 class="site-title">📌 الموقع الثاني</h2>
+                <p class="site-url">delivery-form-server-54sv.vercel.app</p>
+                
+                <div class="links-list">
+                    <div class="link-item">
+                        <a href="https://delivery-form-server-54sv.vercel.app/" target="_blank">
+                            <span class="icon">🏠</span>
+                            <span>الصفحة الرئيسية</span>
+                        </a>
+                        <span class="status working">يعمل</span>
+                    </div>
+                    
+                    <div class="link-item">
+                        <a href="https://delivery-form-server-54sv.vercel.app/login" target="_blank">
+                            <span class="icon">🔐</span>
+                            <span>تسجيل الدخول</span>
+                        </a>
+                        <span class="status testing">اختبار</span>
+                    </div>
+                    
+                    <div class="link-item">
+                        <a href="https://delivery-form-server-54sv.vercel.app/login.html" target="_blank">
+                            <span class="icon">🔐</span>
+                            <span>تسجيل الدخول (.html)</span>
+                        </a>
+                        <span class="status working">يعمل</span>
+                    </div>
+                    
+                    <div class="link-item">
+                        <a href="https://delivery-form-server-54sv.vercel.app/dashboard" target="_blank">
+                            <span class="icon">📊</span>
+                            <span>لوحة التحكم</span>
+                        </a>
+                        <span class="status testing">اختبار</span>
+                    </div>
+                    
+                    <div class="link-item">
+                        <a href="https://delivery-form-server-54sv.vercel.app/dashboard.html" target="_blank">
+                            <span class="icon">📊</span>
+                            <span>لوحة التحكم (.html)</span>
+                        </a>
+                        <span class="status working">يعمل</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="actions">
+            <a href="#" class="action-btn" onclick="window.location.reload(); return false;">
+                <span>🔄</span>
+                <span>تحديث الصفحة</span>
+            </a>
+            
+            <a href="CHECK-404-FIX.bat" class="action-btn" download>
+                <span>🔍</span>
+                <span>تحميل أداة الفحص</span>
+            </a>
+            
+            <a href="https://vercel.com/dashboard" class="action-btn" target="_blank">
+                <span>🚀</span>
+                <span>Vercel Dashboard</span>
+            </a>
+            
+            <a href="https://github.com/mshari-11/delivery-form-server" class="action-btn" target="_blank">
+                <span>📁</span>
+                <span>GitHub Repository</span>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

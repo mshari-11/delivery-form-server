@@ -4,15 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>إعادة توجيه - لوحة التحكم</title>
+    <meta http-equiv="refresh" content="0;url=/public/dashboard.html">
     <script>
-        // إعادة توجيه فورية للمسار الصحيح
-        window.location.href = '/dashboard.html';
+        // إعادة توجيه فورية للمسار الصحيح في public
+        window.location.replace('/public/dashboard.html');
     </script>
 </head>
 <body>
     <div style="text-align: center; padding: 50px; font-family: Arial, sans-serif;">
         <h2>جاري التحويل للوحة التحكم...</h2>
-        <p>إذا لم يتم التحويل تلقائياً، <a href="/dashboard.html">انقر هنا</a></p>
+        <p>إذا لم يتم التحويل تلقائياً، <a href="/public/dashboard.html">انقر هنا</a></p>
+        <p style="margin-top: 20px; color: #666;">
+            أو جرب: <a href="/dashboard.html">الرابط البديل</a>
+        </p>
     </div>
 </body>
 </html>
