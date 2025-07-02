@@ -99,34 +99,6 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
-// Routes
-
-// Home page
-app.get('/', (req, res) => {
-  res.redirect('/form-complete.html');
-});
-
-// Serve HTML files
-app.get('/form-complete.html', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/form-complete.html'));
-});
-
-app.get('/dashboard.html', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/dashboard.html'));
-});
-
-app.get('/login.html', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/login.html'));
-});
-
-app.get('/dashboard', (req, res) => {
-  res.redirect('/dashboard.html');
-});
-
-app.get('/login', (req, res) => {
-  res.redirect('/login.html');
-});
-
 // API Routes
 
 // Login

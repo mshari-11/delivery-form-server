@@ -37,6 +37,11 @@
                 color: black !important;
             }
             
+            /* إخفاء زر دخول الإدارة عند الطباعة */
+            .admin-login-box {
+                display: none !important;
+            }
+            
             .container {
                 max-width: none !important;
                 margin: 0 !important;
@@ -570,6 +575,12 @@
 </head>
 <body>
     <div class="container">
+        <!-- زر دخول الإدارة -->
+        <div class="admin-login-box" style="text-align: left; padding: 10px; background: #f0f0f0; margin-bottom: 10px; border-radius: 5px;">
+            <a href="/login" style="background: #2c3e50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-size: 14px; display: inline-block; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                🔐 دخول الإدارة
+            </a>
+        </div>
         <!-- هيدر الشركة مع اللوغو -->
         <div class="company-header">
             <div class="company-logo">

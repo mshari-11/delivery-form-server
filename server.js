@@ -186,37 +186,8 @@ const logActivity = (userId, action, target, details, ipAddress) => {
 
 // Routes
 
-// الصفحة الرئيسية - عرض النموذج
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'form-complete.html'));
-});
-
-// صفحة تسجيل الدخول
-app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, 'login.html'));
-});
-
-app.get('/login.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'login.html'));
-});
-
-// صفحة لوحة التحكم
-app.get('/dashboard', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dashboard.html'));
-});
-
-app.get('/dashboard.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dashboard.html'));
-});
-
-// صفحة النموذج المكتمل
-app.get('/form-complete.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'form-complete.html'));
-});
-
-app.get('/index.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
+// ملاحظة: تم نقل جميع معالجات HTML إلى vercel.json
+// Vercel سيتعامل مع توجيه الملفات الثابتة تلقائياً
 
 // عرض الملفات المرفوعة
 app.get('/uploads/*', (req, res) => {

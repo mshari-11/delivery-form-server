@@ -2651,7 +2651,7 @@
                 submitButton.disabled = true;
                 submitButton.textContent = 'جاري الإرسال...';
                 
-                const response = await fetch('http://localhost:3001/api/register', {
+                const response = await fetch('/api/register', {
                     method: 'POST',
                     body: formData
                 });
