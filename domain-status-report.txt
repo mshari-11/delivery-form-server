@@ -1,0 +1,17 @@
+Domain Status Report - Wed 07/02/2025 18:35:37.75
+═══════════════════════════════════════════════════════
+
+Domain: firstlineon.com
+Passed Checks: 5
+Warnings: 1
+Failed Checks: 1
+
+DNS Resolution:
+Server:  dns.google
+Address:  8.8.8.8
+
+
+Nameservers:
+Server:  dns.google
+Address:  8.8.8.8
+

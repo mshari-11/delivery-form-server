@@ -1,0 +1,16 @@
+إعدادات DNS المطلوبة:
+
+A Record:
+- Name: @ (أو فارغ)
+- Value: 76.76.19.19
+- TTL: Auto
+
+CNAME Record:
+- Name: www
+- Value: cname.vercel-dns.com
+- TTL: Auto
+
+ملاحظات مهمة:
+- انتظر 30 دقيقة على الأقل بعد إضافة السجلات
+- تحقق من الانتشار باستخدام whatsmydns.net
+- الموقع المؤقت: https://delivery-form-mshari.vercel.app
