@@ -1,5 +1,4 @@
-https://delivery-form-mshari.vercel.app/login
-https://delivery-form-mshari.vercel.app/login.html@echo off
+@echo off
 chcp 65001 >nul
 color 0A
 cls
