@@ -12,7 +12,7 @@ const path = require('path');
 const fs = require('fs');
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 5000;
 const JWT_SECRET = 'FirstLineLogistics2025SecretKey';
 
 // إعدادات Middleware
@@ -721,13 +721,11 @@ app.use((error, req, res, next) => {
 });
 
 // بدء تشغيل السيرفر
-if (process.env.NODE_ENV !== 'production') {
-  app.listen(PORT, () => {
-    console.log(`🚀 الخادم يعمل على المنفذ ${PORT}`);
-    console.log(`📊 لوحة التحكم: http://localhost:${PORT}/dashboard`);
-    console.log(`📝 النموذج: http://localhost:${PORT}/`);
-    console.log(`🔑 تسجيل الدخول الافتراضي: admin / admin123`);
-  });
-}
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 الخادم يعمل على المنفذ ${PORT}`);
+  console.log(`📊 لوحة التحكم: http://0.0.0.0:${PORT}/dashboard`);
+  console.log(`📝 النموذج: http://0.0.0.0:${PORT}/`);
+  console.log(`🔑 تسجيل الدخول الافتراضي: admin / admin123`);
+});
 
 module.exports = app;
