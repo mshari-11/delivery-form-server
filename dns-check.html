@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فحص حالة DNS - شركة الخط الأول</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .status-card {
+            border-right: 5px solid #e0e0e0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .status-card.success {
+            border-right-color: #4caf50;
+            background: linear-gradient(to left, rgba(76, 175, 80, 0.1), transparent);
+        }
+
+        .status-card.warning {
+            border-right-color: #ff9800;
+            background: linear-gradient(to left, rgba(255, 152, 0, 0.1), transparent);
+        }
+
+        .status-card.error {
+            border-right-color: #f44336;
+            background: linear-gradient(to left, rgba(244, 67, 54, 0.1), transparent);
+        }
+
+        .status-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 3rem;
+            opacity: 0.2;
+        }
+
+        .nameserver-box {
+            background: #f8f9fa;
+            border: 2px dashed #dee2e6;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            text-align: left;
+            direction: ltr;
+            position: relative;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: background 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: #0056b3;
+        }
+
+        .copy-btn.copied {
+            background: #28a745;
+        }
+
+        .btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin: 10px;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,123,255,0.3);
+        }
+
+        .btn-success {
+            background: #28a745;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+            box-shadow: 0 5px 15px rgba(40,167,69,0.3);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #007bff;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .steps {
+            counter-reset: step-counter;
+        }
+
+        .step {
+            position: relative;
+            padding-right: 50px;
+            margin-bottom: 20px;
+            counter-increment: step-counter;
+        }
+
+        .step::before {
+            content: counter(step-counter);
+            position: absolute;
+            right: 0;
+            top: 0;
+            background: #007bff;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .result-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .result-item i {
+            margin-left: 10px;
+            font-size: 1.2rem;
+        }
+
+        .result-item.success i {
+            color: #28a745;
+        }
+
+        .result-item.error i {
+            color: #dc3545;
+        }
+
+        .tips {
+            background: #e3f2fd;
+            border-right: 4px solid #2196f3;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .tips h4 {
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+
+        .tips ul {
+            list-style: none;
+            padding-right: 20px;
+        }
+
+        .tips li {
+            margin-bottom: 8px;
+            position: relative;
+        }
+
+        .tips li::before {
+            content: "💡";
+            position: absolute;
+            right: -25px;
+        }
+
+        .providers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .provider-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .provider-card:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+
+            .nameserver-box {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌐 فحص حالة ربط النطاق</h1>
+            <p>أداة فحص وتشخيص ربط نطاق firstlineon.com مع Vercel</p>
+        </div>
+
+        <div class="card status-card" id="currentStatus">
+            <div class="status-icon">
+                <i class="fas fa-sync-alt"></i>
+            </div>
+            <h3>📊 الحالة الحالية</h3>
+            <p id="statusText">جاري فحص حالة النطاق...</p>
+            <div id="statusDetails" style="display:none; margin-top: 20px;">
+                <div class="result-item" id="nsCheck">
+                    <span>فحص Nameservers</span>
+                    <i class="fas fa-spinner fa-spin"></i>
+                </div>
+                <div class="result-item" id="siteCheck">
+                    <span>فحص الموقع على النطاق</span>
+                    <i class="fas fa-spinner fa-spin"></i>
+                </div>
+                <div class="result-item" id="sslCheck">
+                    <span>فحص شهادة SSL</span>
+                    <i class="fas fa-spinner fa-spin"></i>
+                </div>
+                <div class="result-item" id="wwwCheck">
+                    <span>فحص النطاق الفرعي www</span>
+                    <i class="fas fa-spinner fa-spin"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>📝 Nameservers المطلوبة لـ Vercel</h3>
+            <p>يجب تغيير nameservers في موقع مزود النطاق إلى:</p>
+            <div class="nameserver-box">
+                <button class="copy-btn" onclick="copyNameservers()">
+                    <i class="fas fa-copy"></i> نسخ
+                </button>
+                <div id="nameserversText">
+ns1.vercel-dns.com
+ns2.vercel-dns.com
+                </div>
+            </div>
+        </div>
+
+        <div class="card" id="instructions">
+            <h3>🔧 خطوات ربط النطاق</h3>
+            <div class="steps">
+                <div class="step">
+                    <h4>تسجيل الدخول لمزود النطاق</h4>
+                    <p>ادخل إلى لوحة التحكم في الموقع الذي اشتريت منه النطاق firstlineon.com</p>
+                </div>
+                <div class="step">
+                    <h4>البحث عن إعدادات DNS</h4>
+                    <p>ابحث عن قسم DNS Management أو Nameservers أو Domain Settings</p>
+                </div>
+                <div class="step">
+                    <h4>حذف Nameservers الحالية</h4>
+                    <p>احذف جميع nameservers الموجودة حالياً</p>
+                </div>
+                <div class="step">
+                    <h4>إضافة Nameservers Vercel</h4>
+                    <p>أضف nameservers Vercel المذكورة أعلاه</p>
+                </div>
+                <div class="step">
+                    <h4>حفظ التغييرات</h4>
+                    <p>احفظ التغييرات وانتظر 6-24 ساعة لانتشار DNS</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>🏢 مزودي النطاقات الشائعين</h3>
+            <div class="providers-grid">
+                <div class="provider-card">
+                    <h4>GoDaddy</h4>
+                    <p>My Products → DNS → Nameservers</p>
+                </div>
+                <div class="provider-card">
+                    <h4>Namecheap</h4>
+                    <p>Domain List → Manage → Nameservers</p>
+                </div>
+                <div class="provider-card">
+                    <h4>Google Domains</h4>
+                    <p>DNS → Custom name servers</p>
+                </div>
+                <div class="provider-card">
+                    <h4>Cloudflare</h4>
+                    <p>DNS → Nameservers</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="tips">
+            <h4>💡 نصائح مهمة</h4>
+            <ul>
+                <li>تأكد من حذف جميع nameservers القديمة قبل إضافة nameservers Vercel</li>
+                <li>لا تحتاج لإضافة A records أو CNAME - Vercel سيديرها تلقائياً</li>
+                <li>التغييرات قد تحتاج 6-24 ساعة لتنتشر عالمياً</li>
+                <li>يمكنك استخدام أدوات فحص DNS عبر الإنترنت لتتبع التقدم</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px;">
+            <button class="btn" onclick="checkDNS()">
+                <i class="fas fa-sync-alt"></i> إعادة الفحص
+            </button>
+            <a href="/api/check-dns" target="_blank" class="btn btn-success">
+                <i class="fas fa-code"></i> عرض API Response
+            </a>
+            <a href="https://dnschecker.org/#NS/firstlineon.com" target="_blank" class="btn">
+                <i class="fas fa-globe"></i> فحص DNS عالمياً
+            </a>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>جاري فحص حالة النطاق...</p>
+        </div>
+    </div>
+
+    <script>
+        let checkInterval;
+
+        async function checkDNS() {
+            const loading = document.getElementById('loading');
+            const statusCard = document.getElementById('currentStatus');
+            const statusText = document.getElementById('statusText');
+            const statusDetails = document.getElementById('statusDetails');
+            
+            loading.style.display = 'block';
+            statusDetails.style.display = 'block';
+            
+            // Reset status items
+            const statusItems = ['nsCheck', 'siteCheck', 'sslCheck', 'wwwCheck'];
+            statusItems.forEach(id => {
+                const item = document.getElementById(id);
+                item.querySelector('i').className = 'fas fa-spinner fa-spin';
+                item.className = 'result-item';
+            });
+            
+            try {
+                const response = await fetch('/api/check-dns');
+                const data = await response.json();
+                
+                // Update nameservers status
+                const nsCheck = document.getElementById('nsCheck');
+                if (data.nameservers && data.nameservers.isCorrect) {
+                    nsCheck.querySelector('i').className = 'fas fa-check-circle';
+                    nsCheck.classList.add('success');
+                } else {
+                    nsCheck.querySelector('i').className = 'fas fa-times-circle';
+                    nsCheck.classList.add('error');
+                }
+                
+                // Update site status
+                const siteCheck = document.getElementById('siteCheck');
+                if (data.site && data.site.isAccessible) {
+                    siteCheck.querySelector('i').className = 'fas fa-check-circle';
+                    siteCheck.classList.add('success');
+                } else {
+                    siteCheck.querySelector('i').className = 'fas fa-times-circle';
+                    siteCheck.classList.add('error');
+                }
+                
+                // Update SSL status (assuming it's OK if site is accessible)
+                const sslCheck = document.getElementById('sslCheck');
+                if (data.site && data.site.isAccessible) {
+                    sslCheck.querySelector('i').className = 'fas fa-check-circle';
+                    sslCheck.classList.add('success');
+                } else {
+                    sslCheck.querySelector('i').className = 'fas fa-times-circle';
+                    sslCheck.classList.add('error');
+                }
+                
+                // Update www status
+                const wwwCheck = document.getElementById('wwwCheck');
+                if (data.www && data.www.isAccessible) {
+                    wwwCheck.querySelector('i').className = 'fas fa-check-circle';
+                    wwwCheck.classList.add('success');
+                } else {
+                    wwwCheck.querySelector('i').className = 'fas fa-times-circle';
+                    wwwCheck.classList.add('error');
+                }
+                
+                // Update overall status
+                if (data.isConnected) {
+                    statusCard.className = 'card status-card success';
+                    statusText.innerHTML = `
+                        <strong style="color: #28a745;">✅ النطاق مربوط بنجاح!</strong><br>
+                        يمكنك الآن الوصول للموقع عبر: 
+                        <a href="https://firstlineon.com" target="_blank" style="color: #007bff;">firstlineon.com</a>
+                    `;
+                } else if (data.nameservers && data.nameservers.isCorrect) {
+                    statusCard.className = 'card status-card warning';
+                    statusText.innerHTML = `
+                        <strong style="color: #ff9800;">⏳ Nameservers صحيحة، في انتظار التفعيل...</strong><br>
+                        ${data.message || 'قد يحتاج الأمر بضع دقائق إضافية'}
+                    `;
+                } else {
+                    statusCard.className = 'card status-card error';
+                    statusText.innerHTML = `
+                        <strong style="color: #f44336;">❌ النطاق غير مربوط بعد</strong><br>
+                        ${data.message || 'يرجى اتباع الخطوات المذكورة لربط النطاق'}
+                    `;
+                }
+                
+                // Show current nameservers if available
+                if (data.nameservers && data.nameservers.current && data.nameservers.current.length > 0) {
+                    const currentNS = data.nameservers.current.map(ns => `• ${ns}`).join('<br>');
+                    statusText.innerHTML += `
+                        <div style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 5px;">
+                            <strong>Nameservers الحالية:</strong><br>
+                            <span style="font-family: monospace; font-size: 0.9em;">${currentNS}</span>
+                        </div>
+                    `;
+                }
+                
+            } catch (error) {
+                statusCard.className = 'card status-card error';
+                statusText.innerHTML = `
+                    <strong style="color: #f44336;">❌ خطأ في الفحص</strong><br>
+                    ${error.message}
+                `;
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+
+        function copyNameservers() {
+            const text = document.getElementById('nameserversText').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                btn.innerHTML = '<i class="fas fa-check"></i> تم النسخ';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.innerHTML = '<i class="fas fa-copy"></i> نسخ';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        // Check on load
+        window.onload = () => {
+            checkDNS();
+            // Check every 30 seconds
+            checkInterval = setInterval(checkDNS, 30000);
+        };
+
+        // Stop checking when page is hidden
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                clearInterval(checkInterval);
+            } else {
+                checkDNS();
+                checkInterval = setInterval(checkDNS, 30000);
+            }
+        });
+    </script>
+</body>
+</html>
