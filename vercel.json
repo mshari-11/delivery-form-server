@@ -21,6 +21,10 @@
       "destination": "/admin.html"
     },
     {
+      "source": "/management",
+      "destination": "/management.html"
+    },
+    {
       "source": "/",
       "destination": "/home.html"
     },
