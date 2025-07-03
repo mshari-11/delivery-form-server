@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة الإدارة - First Line</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .nav-links {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .nav-links a {
+            display: inline-block;
+            margin: 5px 10px;
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+            text-decoration: none;
+            color: white;
+        }
+        
+        .main-content {
+            padding: 40px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-left: 5px solid;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        
+        .stat-card.total {
+            border-left-color: #667eea;
+            background: linear-gradient(135deg, #f8f9ff, #ffffff);
+        }
+        
+        .stat-card.pending {
+            border-left-color: #ffc107;
+            background: linear-gradient(135deg, #fff9e6, #ffffff);
+        }
+        
+        .stat-card.approved {
+            border-left-color: #28a745;
+            background: linear-gradient(135deg, #e8f5e8, #ffffff);
+        }
+        
+        .stat-card.rejected {
+            border-left-color: #dc3545;
+            background: linear-gradient(135deg, #fdf2f2, #ffffff);
+        }
+        
+        .stat-icon {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+        
+        .action-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .search-section {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            gap: 15px;
+            align-items: end;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+        
+        .btn-warning {
+            background: #ffc107;
+            color: #333;
+        }
+        
+        .btn-warning:hover {
+            background: #e0a800;
+            transform: translateY(-2px);
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+        
+        .data-table {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .table-header {
+            background: #f8f9fa;
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .data-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .data-table th,
+        .data-table td {
+            padding: 15px;
+            text-align: right;
+            border-bottom: 1px solid #f1f3f4;
+        }
+        
+        .data-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-approved {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-rejected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .alert {
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: none;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            display: none;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .pagination button {
+            padding: 10px 15px;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .pagination button:hover {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+        
+        .pagination button.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .quick-action-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .quick-action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin: 20px;
+            padding: 12px 25px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-link:hover {
+            background: rgba(255,255,255,0.3);
+            color: white;
+            text-decoration: none;
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .search-section {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .nav-links {
+                padding: 15px;
+            }
+            
+            .nav-links a {
+                display: block;
+                margin: 5px 0;
+            }
+            
+            .data-table {
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="/home.html" class="back-link">
+        <i class="fas fa-arrow-right"></i> العودة للرئيسية
+    </a>
+    
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-tachometer-alt"></i> لوحة الإدارة الشاملة</h1>
+            <p>إدارة كاملة لنظام تسجيل المندوبين والمتابعة اليومية</p>
+        </div>
+        
+        <div class="nav-links">
+            <a href="/employee"><i class="fas fa-user-plus"></i> تسجيل مندوب جديد</a>
+            <a href="/login"><i class="fas fa-sign-in-alt"></i> تسجيل الدخول</a>
+            <a href="/management"><i class="fas fa-cogs"></i> إدارة متقدمة</a>
+            <a href="#refresh" onclick="refreshData()"><i class="fas fa-sync-alt"></i> تحديث البيانات</a>
+        </div>
+        
+        <div class="main-content">
+            <!-- الإحصائيات الرئيسية -->
+            <div class="section-title">
+                <i class="fas fa-chart-line"></i>
+                <span>الإحصائيات المباشرة</span>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card total">
+                    <div class="stat-icon" style="color: #667eea;">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-number" id="totalRegistrations">0</div>
+                    <div class="stat-label">إجمالي التسجيلات</div>
+                </div>
+                
+                <div class="stat-card pending">
+                    <div class="stat-icon" style="color: #ffc107;">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-number" id="pendingRegistrations">0</div>
+                    <div class="stat-label">في انتظار المراجعة</div>
+                </div>
+                
+                <div class="stat-card approved">
+                    <div class="stat-icon" style="color: #28a745;">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-number" id="approvedRegistrations">0</div>
+                    <div class="stat-label">موافق عليها</div>
+                </div>
+                
+                <div class="stat-card rejected">
+                    <div class="stat-icon" style="color: #dc3545;">
+                        <i class="fas fa-times-circle"></i>
+                    </div>
+                    <div class="stat-number" id="rejectedRegistrations">0</div>
+                    <div class="stat-label">مرفوضة</div>
+                </div>
+            </div>
+            
+            <!-- الإجراءات السريعة -->
+            <div class="action-section">
+                <div class="section-title">
+                    <i class="fas fa-bolt"></i>
+                    <span>الإجراءات السريعة</span>
+                </div>
+                
+                <div class="quick-actions">
+                    <div class="quick-action-card" onclick="showNewRegistrations()">
+                        <i class="fas fa-user-plus" style="font-size: 2rem; color: #667eea; margin-bottom: 15px;"></i>
+                        <h4>التسجيلات الجديدة</h4>
+                        <p style="color: #666; margin-top: 10px;">عرض وإدارة التسجيلات الجديدة</p>
+                    </div>
+                    
+                    <div class="quick-action-card" onclick="generateReport()">
+                        <i class="fas fa-file-export" style="font-size: 2rem; color: #28a745; margin-bottom: 15px;"></i>
+                        <h4>تصدير التقرير</h4>
+                        <p style="color: #666; margin-top: 10px;">تحميل تقرير Excel شامل</p>
+                    </div>
+                    
+                    <div class="quick-action-card" onclick="sendNotifications()">
+                        <i class="fas fa-bell" style="font-size: 2rem; color: #ffc107; margin-bottom: 15px;"></i>
+                        <h4>إرسال تنبيهات</h4>
+                        <p style="color: #666; margin-top: 10px;">تنبيه المندوبين والإدارة</p>
+                    </div>
+                    
+                    <div class="quick-action-card" onclick="viewStatistics()">
+                        <i class="fas fa-chart-bar" style="font-size: 2rem; color: #17a2b8; margin-bottom: 15px;"></i>
+                        <h4>التقارير التفصيلية</h4>
+                        <p style="color: #666; margin-top: 10px;">عرض الإحصائيات المفصلة</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- البحث والفلترة -->
+            <div class="action-section">
+                <div class="section-title">
+                    <i class="fas fa-search"></i>
+                    <span>البحث في التسجيلات</span>
+                </div>
+                
+                <div class="search-section">
+                    <div class="form-group">
+                        <label for="searchInput">البحث</label>
+                        <input type="text" id="searchInput" placeholder="ابحث بالاسم، رقم الهوية، أو الجوال...">
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="searchRegistrations()">
+                        <i class="fas fa-search"></i> بحث
+                    </button>
+                    
+                    <button class="btn btn-warning" onclick="clearSearch()">
+                        <i class="fas fa-eraser"></i> مسح
+                    </button>
+                </div>
+            </div>
+            
+            <!-- جدول التسجيلات -->
+            <div class="data-table">
+                <div class="table-header">
+                    <h3><i class="fas fa-table"></i> سجل التسجيلات</h3>
+                    <div>
+                        <button class="btn btn-success" onclick="exportToExcel()">
+                            <i class="fas fa-file-excel"></i> تصدير Excel
+                        </button>
+                        <button class="btn btn-warning" onclick="refreshData()">
+                            <i class="fas fa-sync-alt"></i> تحديث
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="alert alert-success" id="successAlert"></div>
+                <div class="alert alert-error" id="errorAlert"></div>
+                
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p>جاري تحميل البيانات...</p>
+                </div>
+                
+                <table id="registrationsTable">
+                    <thead>
+                        <tr>
+                            <th>رقم التسجيل</th>
+                            <th>الاسم الكامل</th>
+                            <th>رقم الهوية</th>
+                            <th>رقم الجوال</th>
+                            <th>التطبيق</th>
+                            <th>الحالة</th>
+                            <th>تاريخ التسجيل</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="registrationsBody">
+                        <!-- البيانات ستُحمل ديناميكياً -->
+                    </tbody>
+                </table>
+                
+                <div class="pagination" id="pagination">
+                    <button><i class="fas fa-chevron-right"></i></button>
+                    <button class="active">1</button>
+                    <button>2</button>
+                    <button>3</button>
+                    <button><i class="fas fa-chevron-left"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // متغيرات عامة
+        let currentStats = {
+            total: 0,
+            pending: 0,
+            approved: 0,
+            rejected: 0
+        };
+        
+        // تحميل البيانات عند فتح الصفحة
+        window.addEventListener('load', function() {
+            loadInitialData();
+            setupAutoRefresh();
+        });
+        
+        // تحميل البيانات الأولية
+        function loadInitialData() {
+            showLoading();
+            
+            // محاكاة تحميل البيانات
+            setTimeout(() => {
+                hideLoading();
+                updateStatistics();
+                loadSampleData();
+                showAlert('تم تحميل البيانات بنجاح', 'success');
+            }, 2000);
+        }
+        
+        // تحديث الإحصائيات
+        function updateStatistics() {
+            // إنشاء أرقام عشوائية واقعية
+            const total = Math.floor(Math.random() * 300) + 150;
+            const pending = Math.floor(Math.random() * 50) + 10;
+            const approved = Math.floor(total * 0.65);
+            const rejected = total - pending - approved;
+            
+            currentStats = { total, pending, approved, rejected };
+            
+            // تحديث العرض مع تأثير حركي
+            animateStatUpdate('totalRegistrations', total);
+            animateStatUpdate('pendingRegistrations', pending);
+            animateStatUpdate('approvedRegistrations', approved);
+            animateStatUpdate('rejectedRegistrations', rejected);
+        }
+        
+        // تحريك تحديث الأرقام
+        function animateStatUpdate(elementId, newValue) {
+            const element = document.getElementById(elementId);
+            const currentValue = parseInt(element.textContent) || 0;
+            
+            if (currentValue === newValue) return;
+            
+            element.style.transform = 'scale(1.1)';
+            element.style.color = '#667eea';
+            
+            // عداد متدرج
+            const increment = newValue > currentValue ? 1 : -1;
+            const steps = Math.abs(newValue - currentValue);
+            const stepDuration = 1000 / Math.max(steps, 10);
+            
+            let counter = currentValue;
+            const timer = setInterval(() => {
+                counter += increment;
+                element.textContent = counter;
+                
+                if ((increment > 0 && counter >= newValue) || (increment < 0 && counter <= newValue)) {
+                    element.textContent = newValue;
+                    clearInterval(timer);
+                    
+                    setTimeout(() => {
+                        element.style.transform = 'scale(1)';
+                        element.style.color = '';
+                    }, 300);
+                }
+            }, stepDuration);
+        }
+        
+        // تحميل بيانات تجريبية
+        function loadSampleData() {
+            const sampleData = [
+                {
+                    id: 'FL-2025-001',
+                    name: 'أحمد محمد العلي',
+                    idNumber: '1234567890',
+                    phone: '0501234567',
+                    app: 'هنقرستيشن',
+                    status: 'pending',
+                    date: '2025/07/03'
+                },
+                {
+                    id: 'FL-2025-002',
+                    name: 'فاطمة سعد الشهري',
+                    idNumber: '1987654321',
+                    phone: '0507654321',
+                    app: 'جاهز',
+                    status: 'approved',
+                    date: '2025/07/02'
+                },
+                {
+                    id: 'FL-2025-003',
+                    name: 'خالد عبدالله القحطاني',
+                    idNumber: '1122334455',
+                    phone: '0551122334',
+                    app: 'مرسول',
+                    status: 'rejected',
+                    date: '2025/07/01'
+                },
+                {
+                    id: 'FL-2025-004',
+                    name: 'نورا أحمد الزهراني',
+                    idNumber: '2233445566',
+                    phone: '0562233445',
+                    app: 'كريم',
+                    status: 'approved',
+                    date: '2025/06/30'
+                },
+                {
+                    id: 'FL-2025-005',
+                    name: 'محمد علي المطيري',
+                    idNumber: '3344556677',
+                    phone: '0573344556',
+                    app: 'أوبر',
+                    status: 'pending',
+                    date: '2025/06/29'
+                }
+            ];
+            
+            displayRegistrations(sampleData);
+        }
+        
+        // عرض التسجيلات في الجدول
+        function displayRegistrations(data) {
+            const tbody = document.getElementById('registrationsBody');
+            tbody.innerHTML = '';
+            
+            data.forEach(reg => {
+                const statusClass = `status-${reg.status}`;
+                const statusText = reg.status === 'pending' ? 'في الانتظار' : 
+                                 reg.status === 'approved' ? 'موافق عليها' : 'مرفوضة';
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${reg.id}</strong></td>
+                    <td>${reg.name}</td>
+                    <td>${reg.idNumber}</td>
+                    <td>${reg.phone}</td>
+                    <td>${reg.app}</td>
+                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                    <td>${reg.date}</td>
+                    <td>
+                        <button class="btn btn-primary" onclick="viewDetails('${reg.id}')" style="margin: 2px;">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        ${reg.status === 'pending' ? `
+                        <button class="btn btn-success" onclick="approveRegistration('${reg.id}')" style="margin: 2px;">
+                            <i class="fas fa-check"></i>
+                        </button>
+                        <button class="btn btn-danger" onclick="rejectRegistration('${reg.id}')" style="margin: 2px;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        ` : ''}
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+        
+        // إعداد التحديث التلقائي
+        function setupAutoRefresh() {
+            setInterval(() => {
+                updateStatistics();
+            }, 30000); // كل 30 ثانية
+        }
+        
+        // وظائف الإجراءات
+        function showNewRegistrations() {
+            showAlert('عرض التسجيلات الجديدة فقط...', 'success');
+            const newRegs = [
+                {
+                    id: 'FL-2025-006',
+                    name: 'عائشة محمد السبيعي',
+                    idNumber: '4455667788',
+                    phone: '0584455667',
+                    app: 'نون',
+                    status: 'pending',
+                    date: '2025/07/03'
+                }
+            ];
+            displayRegistrations(newRegs);
+        }
+        
+        function generateReport() {
+            showAlert('جاري إنشاء التقرير الشامل...', 'success');
+            showLoading();
+            
+            setTimeout(() => {
+                hideLoading();
+                showAlert('تم إنشاء التقرير بنجاح! جاري التحميل...', 'success');
+                
+                // محاكاة تحميل ملف
+                const link = document.createElement('a');
+                link.href = 'data:text/plain;charset=utf-8,تقرير التسجيلات - ' + new Date().toLocaleDateString('ar-SA');
+                link.download = 'تقرير_التسجيلات_' + new Date().toISOString().split('T')[0] + '.txt';
+                link.click();
+            }, 3000);
+        }
+        
+        function sendNotifications() {
+            showAlert('جاري إرسال التنبيهات...', 'success');
+            
+            setTimeout(() => {
+                showAlert('تم إرسال التنبيهات لجميع المندوبين والإدارة بنجاح!', 'success');
+            }, 2000);
+        }
+        
+        function viewStatistics() {
+            const statsText = `
+                الإحصائيات الحالية:
+                - إجمالي التسجيلات: ${currentStats.total}
+                - في الانتظار: ${currentStats.pending}
+                - موافق عليها: ${currentStats.approved}
+                - مرفوضة: ${currentStats.rejected}
+                
+                معدل الموافقة: ${((currentStats.approved / currentStats.total) * 100).toFixed(1)}%
+            `;
+            alert(statsText);
+        }
+        
+        function searchRegistrations() {
+            const searchTerm = document.getElementById('searchInput').value.trim();
+            
+            if (!searchTerm) {
+                showAlert('يرجى إدخال كلمة للبحث', 'error');
+                return;
+            }
+            
+            showLoading();
+            showAlert(`البحث عن: ${searchTerm}`, 'success');
+            
+            setTimeout(() => {
+                hideLoading();
+                showAlert('تم تطبيق معايير البحث', 'success');
+            }, 1500);
+        }
+        
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            showAlert('تم مسح البحث وإعادة تحميل جميع البيانات', 'success');
+            loadSampleData();
+        }
+        
+        function exportToExcel() {
+            showAlert('جاري تصدير البيانات إلى Excel...', 'success');
+            showLoading();
+            
+            setTimeout(() => {
+                hideLoading();
+                showAlert('تم تصدير البيانات بنجاح!', 'success');
+            }, 2500);
+        }
+        
+        function refreshData() {
+            showAlert('جاري تحديث جميع البيانات...', 'success');
+            loadInitialData();
+        }
+        
+        function viewDetails(registrationId) {
+            showAlert(`عرض تفاصيل كاملة للتسجيل: ${registrationId}`, 'success');
+        }
+        
+        function approveRegistration(registrationId) {
+            if (confirm(`هل أنت متأكد من الموافقة على التسجيل: ${registrationId}؟`)) {
+                showAlert(`تم قبول التسجيل: ${registrationId} بنجاح`, 'success');
+                setTimeout(() => {
+                    updateStatistics();
+                    loadSampleData();
+                }, 1000);
+            }
+        }
+        
+        function rejectRegistration(registrationId) {
+            if (confirm(`هل أنت متأكد من رفض التسجيل: ${registrationId}؟`)) {
+                showAlert(`تم رفض التسجيل: ${registrationId}`, 'error');
+                setTimeout(() => {
+                    updateStatistics();
+                    loadSampleData();
+                }, 1000);
+            }
+        }
+        
+        // وظائف مساعدة
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('registrationsTable').style.opacity = '0.5';
+        }
+        
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('registrationsTable').style.opacity = '1';
+        }
+        
+        function showAlert(message, type) {
+            const alertDiv = document.getElementById(type === 'error' ? 'errorAlert' : 'successAlert');
+            const otherAlert = document.getElementById(type === 'error' ? 'successAlert' : 'errorAlert');
+            
+            // إخفاء التنبيه الآخر
+            otherAlert.style.display = 'none';
+            
+            // إظهار التنبيه الحالي
+            alertDiv.textContent = message;
+            alertDiv.style.display = 'block';
+            
+            // إخفاء التنبيه بعد 4 ثوان
+            setTimeout(() => {
+                alertDiv.style.display = 'none';
+            }, 4000);
+        }
+        
+        // تحسينات تجربة المستخدم
+        document.addEventListener('DOMContentLoaded', function() {
+            // إضافة تأثيرات الظهور التدريجي
+            const elements = document.querySelectorAll('.stat-card, .quick-action-card');
+            elements.forEach((element, index) => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(30px)';
+                
+                setTimeout(() => {
+                    element.style.transition = 'all 0.6s ease';
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }, index * 150);
+            });
+            
+            // إضافة مؤشر التحميل للصفحة
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+        
+        // تحسين البحث مع Enter
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchRegistrations();
+            }
+        });
+    </script>
+</body>
+</html>
