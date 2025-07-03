@@ -9,6 +9,10 @@
       "destination": "/server.js"
     },
     {
+      "source": "/login",
+      "destination": "/login.html"
+    },
+    {
       "source": "/employee",
       "destination": "/employee.html"
     },

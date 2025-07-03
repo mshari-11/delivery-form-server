@@ -3,233 +3,450 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تسجيل الدخول - شركة الخط الأول</title>
+    <title>تسجيل الدخول - First Line</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
+        
         body {
-            font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #333;
+            padding: 20px;
         }
-
+        
         .login-container {
             background: white;
-            padding: 40px;
             border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            padding: 50px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
             width: 100%;
-            max-width: 400px;
+            max-width: 450px;
             text-align: center;
+            position: relative;
+            overflow: hidden;
         }
-
+        
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+        
         .logo {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
-            border-radius: 20px;
-            margin: 0 auto 20px;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            margin: 0 auto 30px;
             display: flex;
             align-items: center;
             justify-content: center;
+            color: white;
+            font-size: 2.5rem;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
         }
-
-        .logo svg {
-            width: 40px;
-            height: 40px;
-            fill: white;
+        
+        .welcome-text {
+            margin-bottom: 40px;
         }
-
-        h1 {
-            color: #1e3a8a;
+        
+        .welcome-text h1 {
+            color: #333;
+            font-size: 2rem;
             margin-bottom: 10px;
-            font-size: 24px;
         }
-
-        .subtitle {
-            color: #6b7280;
-            margin-bottom: 30px;
-            font-size: 14px;
+        
+        .welcome-text p {
+            color: #666;
+            font-size: 1.1rem;
         }
-
+        
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             text-align: right;
         }
-
-        label {
+        
+        .form-group label {
             display: block;
             margin-bottom: 8px;
-            color: #374151;
             font-weight: 600;
+            color: #333;
+            font-size: 1rem;
         }
-
-        input[type="text"],
-        input[type="password"] {
+        
+        .input-wrapper {
+            position: relative;
+        }
+        
+        .form-group input {
             width: 100%;
-            padding: 15px;
-            border: 2px solid #e5e7eb;
-            border-radius: 10px;
+            padding: 18px 20px;
+            padding-right: 50px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
             font-size: 16px;
             transition: all 0.3s ease;
-            background: #f9fafb;
+            background: #f8f9fa;
         }
-
-        input[type="text"]:focus,
-        input[type="password"]:focus {
+        
+        .form-group input:focus {
             outline: none;
-            border-color: #3b82f6;
+            border-color: #667eea;
             background: white;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
-
+        
+        .input-icon {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #667eea;
+            font-size: 1.2rem;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+        
+        .password-toggle:hover {
+            color: #667eea;
+        }
+        
         .login-btn {
             width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             border: none;
-            border-radius: 10px;
-            font-size: 16px;
+            border-radius: 12px;
+            font-size: 18px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin-top: 20px;
+            margin: 30px 0;
+            position: relative;
+            overflow: hidden;
         }
-
+        
         .login-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
         }
-
+        
+        .login-btn:active {
+            transform: translateY(0);
+        }
+        
         .login-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
+            background: #ccc;
             transform: none;
+            box-shadow: none;
+            cursor: not-allowed;
         }
-
-        .error-message {
-            background: #fef2f2;
-            color: #dc2626;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border: 1px solid #fecaca;
+        
+        .login-btn .spinner {
             display: none;
-        }
-
-        .success-message {
-            background: #f0fdf4;
-            color: #059669;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border: 1px solid #bbf7d0;
-            display: none;
-        }
-
-        .loading {
-            display: none;
-            margin: 10px 0;
-        }
-
-        .loading svg {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ffffff30;
+            border-top: 2px solid #fff;
+            border-radius: 50%;
             animation: spin 1s linear infinite;
-            fill: #3b82f6;
+            margin-left: 10px;
         }
-
+        
         @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
-
-        .footer {
-            margin-top: 30px;
-            color: #6b7280;
-            font-size: 12px;
+        
+        .alert {
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: none;
+            text-align: right;
         }
-
-        @media (max-width: 480px) {
+        
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+            font-size: 0.9rem;
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+        }
+        
+        .remember-me input {
+            width: auto;
+            margin: 0;
+        }
+        
+        .forgot-password {
+            color: #667eea;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .forgot-password:hover {
+            color: #5a6fd8;
+            text-decoration: underline;
+        }
+        
+        .default-credentials {
+            background: #e3f2fd;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 30px 0;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .default-credentials h4 {
+            color: #1976d2;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+        
+        .default-credentials p {
+            color: #555;
+            font-size: 0.9rem;
+            margin: 5px 0;
+        }
+        
+        .default-credentials strong {
+            color: #1976d2;
+        }
+        
+        .quick-login {
+            margin-top: 15px;
+        }
+        
+        .quick-login-btn {
+            background: #2196f3;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .quick-login-btn:hover {
+            background: #1976d2;
+        }
+        
+        .footer-links {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+        }
+        
+        .footer-links a {
+            display: inline-block;
+            margin: 10px 15px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: #5a6fd8;
+            transform: translateY(-1px);
+        }
+        
+        .security-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 25px;
+            color: #28a745;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
             .login-container {
-                margin: 20px;
-                padding: 30px 20px;
+                padding: 30px 25px;
+                margin: 10px;
             }
+            
+            .welcome-text h1 {
+                font-size: 1.6rem;
+            }
+            
+            .remember-forgot {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+        }
+        
+        .page-transition {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
+    <div class="login-container page-transition">
         <div class="logo">
-            <svg viewBox="0 0 24 24">
-                <path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
-            </svg>
+            <i class="fas fa-shield-alt"></i>
         </div>
         
-        <h1>مرحباً بك</h1>
-        <p class="subtitle">نظام إدارة تسجيل مناديب التوصيل</p>
-
-        <div class="error-message" id="errorMessage"></div>
-        <div class="success-message" id="successMessage"></div>
-
+        <div class="welcome-text">
+            <h1>مرحباً بك</h1>
+            <p>قم بتسجيل الدخول للوصول إلى لوحة التحكم</p>
+        </div>
+        
+        <div class="alert alert-error" id="errorAlert"></div>
+        <div class="alert alert-success" id="successAlert"></div>
+        
         <form id="loginForm">
             <div class="form-group">
                 <label for="username">اسم المستخدم</label>
-                <input type="text" id="username" name="username" required>
+                <div class="input-wrapper">
+                    <input type="text" id="username" name="username" required autocomplete="username">
+                    <i class="fas fa-user input-icon"></i>
+                </div>
             </div>
-
+            
             <div class="form-group">
                 <label for="password">كلمة المرور</label>
-                <input type="password" id="password" name="password" required>
+                <div class="input-wrapper">
+                    <input type="password" id="password" name="password" required autocomplete="current-password">
+                    <i class="fas fa-lock input-icon"></i>
+                    <i class="fas fa-eye password-toggle" id="passwordToggle" onclick="togglePassword()"></i>
+                </div>
             </div>
-
-            <div class="loading" id="loading">
-                <svg width="24" height="24" viewBox="0 0 24 24">
-                    <circle cx="12" cy="12" r="10" stroke="#e5e7eb" stroke-width="2" fill="none"/>
-                    <circle cx="12" cy="12" r="10" stroke="#3b82f6" stroke-width="2" 
-                            fill="none" stroke-dasharray="31.416" stroke-dashoffset="31.416"
-                            stroke-linecap="round">
-                        <animate attributeName="stroke-dashoffset" dur="2s" values="31.416;0" repeatCount="indefinite"/>
-                    </circle>
-                </svg>
-                جاري تسجيل الدخول...
+            
+            <div class="remember-forgot">
+                <label class="remember-me">
+                    <input type="checkbox" id="rememberMe">
+                    تذكرني
+                </label>
+                <a href="#" class="forgot-password">نسيت كلمة المرور؟</a>
             </div>
-
-            <button type="submit" class="login-btn" id="loginBtn">تسجيل الدخول</button>
+            
+            <button type="submit" class="login-btn" id="loginBtn">
+                <i class="fas fa-sign-in-alt"></i>
+                تسجيل الدخول
+                <div class="spinner"></div>
+            </button>
         </form>
-
-        <div class="footer">
-            <p>&copy; 2025 شركة الخط الأول للخدمات اللوجستية</p>
-            <p>جميع الحقوق محفوظة</p>
+        
+        <div class="default-credentials">
+            <h4><i class="fas fa-info-circle"></i> بيانات الدخول الافتراضية</h4>
+            <p><strong>اسم المستخدم:</strong> admin</p>
+            <p><strong>كلمة المرور:</strong> admin123</p>
+            <div class="quick-login">
+                <button type="button" class="quick-login-btn" onclick="quickLogin()">
+                    <i class="fas fa-bolt"></i> دخول سريع
+                </button>
+            </div>
+        </div>
+        
+        <div class="security-badge">
+            <i class="fas fa-shield-check"></i>
+            <span>اتصال آمن ومشفر</span>
+        </div>
+        
+        <div class="footer-links">
+            <a href="/home.html">
+                <i class="fas fa-home"></i> الرئيسية
+            </a>
+            <a href="/employee">
+                <i class="fas fa-user-plus"></i> تسجيل مندوب
+            </a>
+            <a href="#" onclick="showHelp()">
+                <i class="fas fa-question-circle"></i> مساعدة
+            </a>
         </div>
     </div>
 
     <script>
+        let loginAttempts = 0;
+        const maxAttempts = 5;
+        
+        // معالج نموذج تسجيل الدخول
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-
-            const username = document.getElementById('username').value;
+            
+            if (loginAttempts >= maxAttempts) {
+                showAlert('تم تجاوز عدد المحاولات المسموح. يرجى المحاولة لاحقاً', 'error');
+                return;
+            }
+            
+            const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value;
-            const errorDiv = document.getElementById('errorMessage');
-            const successDiv = document.getElementById('successMessage');
-            const loadingDiv = document.getElementById('loading');
+            const rememberMe = document.getElementById('rememberMe').checked;
+            
+            if (!username || !password) {
+                showAlert('يرجى ملء جميع الحقول', 'error');
+                return;
+            }
+            
             const loginBtn = document.getElementById('loginBtn');
-
-            // إخفاء الرسائل السابقة
-            errorDiv.style.display = 'none';
-            successDiv.style.display = 'none';
-
-            // عرض حالة التحميل
-            loadingDiv.style.display = 'block';
+            const spinner = loginBtn.querySelector('.spinner');
+            
+            // إظهار حالة التحميل
             loginBtn.disabled = true;
-
+            spinner.style.display = 'inline-block';
+            loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري تسجيل الدخول...';
+            
             try {
                 const response = await fetch('/api/login', {
                     method: 'POST',
@@ -238,40 +455,145 @@
                     },
                     body: JSON.stringify({ username, password })
                 });
-
+                
                 const data = await response.json();
-
+                
                 if (data.success) {
-                    // حفظ الرمز المميز
+                    // حفظ البيانات
                     localStorage.setItem('authToken', data.token);
-                    localStorage.setItem('userData', JSON.stringify(data.user));
-
-                    // عرض رسالة نجاح
-                    successDiv.textContent = 'تم تسجيل الدخول بنجاح! جاري التوجيه...';
-                    successDiv.style.display = 'block';
-
-                    // توجيه للوحة التحكم
+                    localStorage.setItem('currentUser', JSON.stringify(data.user));
+                    
+                    if (rememberMe) {
+                        localStorage.setItem('rememberLogin', 'true');
+                    }
+                    
+                    showAlert('تم تسجيل الدخول بنجاح', 'success');
+                    
+                    // تأثير انتقال لطيف
+                    document.querySelector('.login-container').style.transform = 'scale(0.95)';
+                    document.querySelector('.login-container').style.opacity = '0.7';
+                    
+                    // التوجه للوحة التحكم
                     setTimeout(() => {
-                        window.location.href = '/dashboard';
+                        window.location.href = '/admin';
                     }, 1500);
+                    
                 } else {
-                    errorDiv.textContent = data.message || 'خطأ في تسجيل الدخول';
-                    errorDiv.style.display = 'block';
+                    loginAttempts++;
+                    const remainingAttempts = maxAttempts - loginAttempts;
+                    
+                    let errorMessage = data.message || 'فشل تسجيل الدخول';
+                    if (remainingAttempts > 0) {
+                        errorMessage += ` (المحاولات المتبقية: ${remainingAttempts})`;
+                    }
+                    
+                    showAlert(errorMessage, 'error');
+                    shakeForm();
                 }
             } catch (error) {
                 console.error('Login error:', error);
-                errorDiv.textContent = 'خطأ في الاتصال بالخادم';
-                errorDiv.style.display = 'block';
+                showAlert('خطأ في الاتصال. يرجى التحقق من اتصال الإنترنت', 'error');
+                shakeForm();
             } finally {
-                loadingDiv.style.display = 'none';
-                loginBtn.disabled = false;
+                // إعادة تعيين زر الدخول
+                setTimeout(() => {
+                    loginBtn.disabled = false;
+                    spinner.style.display = 'none';
+                    loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> تسجيل الدخول';
+                }, 1000);
             }
         });
-
-        // التحقق من وجود رمز مصادقة سابق
-        if (localStorage.getItem('authToken')) {
-            window.location.href = '/dashboard';
+        
+        // دخول سريع بالبيانات الافتراضية
+        function quickLogin() {
+            document.getElementById('username').value = 'admin';
+            document.getElementById('password').value = 'admin123';
+            document.getElementById('loginForm').requestSubmit();
         }
+        
+        // تبديل عرض كلمة المرور
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.getElementById('passwordToggle');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+        
+        // عرض التنبيهات
+        function showAlert(message, type) {
+            const alertElement = document.getElementById(type === 'error' ? 'errorAlert' : 'successAlert');
+            const otherAlert = type === 'error' ? document.getElementById('successAlert') : document.getElementById('errorAlert');
+            
+            // إخفاء التنبيه الآخر
+            otherAlert.style.display = 'none';
+            
+            // إظهار التنبيه
+            alertElement.textContent = message;
+            alertElement.style.display = 'block';
+            
+            // إخفاء التنبيه بعد 5 ثوان
+            setTimeout(() => {
+                alertElement.style.display = 'none';
+            }, 5000);
+        }
+        
+        // تأثير هز النموذج عند الخطأ
+        function shakeForm() {
+            const container = document.querySelector('.login-container');
+            container.style.animation = 'shake 0.5s ease-in-out';
+            
+            setTimeout(() => {
+                container.style.animation = '';
+            }, 500);
+        }
+        
+        // عرض المساعدة
+        function showHelp() {
+            const helpText = `مرحباً! إليك معلومات مفيدة:
+
+📧 بيانات الدخول الافتراضية:
+- اسم المستخدم: admin
+- كلمة المرور: admin123
+
+🔒 الأمان:
+- يتم تشفير جميع البيانات
+- جلسة آمنة لمدة 24 ساعة
+
+📱 الوصول:
+- يمكن الوصول من أي جهاز
+- يدعم جميع المتصفحات الحديثة
+
+❓ مشاكل تسجيل الدخول؟
+- تأكد من صحة البيانات
+- تحقق من اتصال الإنترنت
+- استخدم الدخول السريع للاختبار`;
+            
+            alert(helpText);
+        }
+        
+        // التحقق من الجلسة المحفوظة عند تحميل الصفحة
+        window.addEventListener('load', function() {
+            const token = localStorage.getItem('authToken');
+            const rememberLogin = localStorage.getItem('rememberLogin');
+            
+            if (token && rememberLogin) {
+                showAlert('تم العثور على جلسة محفوظة، جاري التوجيه...', 'success');
+                setTimeout(() => {
+                    window.location.href = '/admin';
+                }, 1500);
+            }
+            
+            // تركيز على حقل اسم المستخدم
+            document.getElementById('username').focus();
+        });
     </script>
 </body>
 </html>
