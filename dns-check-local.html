@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فحص DNS المحلي - شركة الخط الأول</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 2rem;
+        }
+        
+        .info-box {
+            background: #f8f9fa;
+            border-right: 4px solid #667eea;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .status-box {
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 2px solid #ffeeba;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+        
+        .nameservers {
+            background: #e3f2fd;
+            border: 2px dashed #2196f3;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            font-family: monospace;
+            font-size: 1.2rem;
+            color: #1976d2;
+        }
+        
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 18px;
+            cursor: pointer;
+            display: block;
+            margin: 30px auto;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .step {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-right: 3px solid #667eea;
+            position: relative;
+            padding-right: 40px;
+        }
+        
+        .step-number {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #667eea;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .links {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #eee;
+            text-align: center;
+        }
+        
+        .links a {
+            color: #667eea;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: 500;
+        }
+        
+        .links a:hover {
+            text-decoration: underline;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .check-list {
+            text-align: right;
+            margin: 20px 0;
+        }
+        
+        .check-item {
+            padding: 10px;
+            margin: 5px 0;
+            background: #f8f9fa;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .check-icon {
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌐 فحص DNS المحلي</h1>
+        
+        <div class="info-box">
+            <p><strong>ملاحظة:</strong> هذه الصفحة تعمل محلياً وتوضح الخطوات المطلوبة لربط النطاق.</p>
+        </div>
+        
+        <div class="status-box warning" id="status">
+            ⏳ في انتظار ربط DNS...
+        </div>
+        
+        <div class="nameservers">
+            <div>Nameservers المطلوبة:</div>
+            <div style="margin-top: 10px;">
+                ns1.vercel-dns.com<br>
+                ns2.vercel-dns.com
+            </div>
+        </div>
+        
+        <h3 style="margin-top: 30px; margin-bottom: 15px;">📋 خطوات الربط:</h3>
+        
+        <div class="step">
+            <span class="step-number">1</span>
+            سجل دخول لموقع مزود النطاق
+        </div>
+        
+        <div class="step">
+            <span class="step-number">2</span>
+            ابحث عن إعدادات DNS أو Nameservers
+        </div>
+        
+        <div class="step">
+            <span class="step-number">3</span>
+            احذف جميع nameservers الموجودة
+        </div>
+        
+        <div class="step">
+            <span class="step-number">4</span>
+            أضف nameservers Vercel المذكورة أعلاه
+        </div>
+        
+        <div class="step">
+            <span class="step-number">5</span>
+            احفظ التغييرات وانتظر 6-24 ساعة
+        </div>
+        
+        <button onclick="checkDNS()">🔍 فحص الحالة الآن</button>
+        
+        <div class="loading" id="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>جاري الفحص...</p>
+        </div>
+        
+        <div id="results" style="display: none;">
+            <h3 style="margin: 20px 0;">✅ قائمة الفحص:</h3>
+            <div class="check-list" id="checkList"></div>
+        </div>
+        
+        <div class="links">
+            <a href="https://delivery-form-server.vercel.app" target="_blank">🌐 الموقع الحالي</a>
+            <a href="https://dnschecker.org/#NS/firstlineon.com" target="_blank">🔍 فحص DNS عالمياً</a>
+            <a href="DOMAIN-SETUP-WIZARD.md">📖 الدليل الكامل</a>
+        </div>
+    </div>
+    
+    <script>
+        async function checkDNS() {
+            const loading = document.getElementById('loading');
+            const results = document.getElementById('results');
+            const checkList = document.getElementById('checkList');
+            const status = document.getElementById('status');
+            
+            loading.style.display = 'block';
+            results.style.display = 'none';
+            checkList.innerHTML = '';
+            
+            // محاكاة الفحص
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            
+            const checks = [
+                { name: 'الموقع الحالي على Vercel', status: true, icon: '✅' },
+                { name: 'الملفات محدثة على GitHub', status: 'pending', icon: '⏳' },
+                { name: 'Nameservers محدثة', status: false, icon: '❌' },
+                { name: 'DNS منتشر عالمياً', status: false, icon: '❌' },
+                { name: 'شهادة SSL جاهزة', status: false, icon: '❌' }
+            ];
+            
+            let allGood = true;
+            
+            checks.forEach(check => {
+                const item = document.createElement('div');
+                item.className = 'check-item';
+                
+                const icon = document.createElement('span');
+                icon.className = 'check-icon';
+                icon.textContent = check.icon;
+                
+                const text = document.createElement('span');
+                text.textContent = check.name;
+                
+                item.appendChild(icon);
+                item.appendChild(text);
+                checkList.appendChild(item);
+                
+                if (check.status === false) allGood = false;
+            });
+            
+            loading.style.display = 'none';
+            results.style.display = 'block';
+            
+            // تحديث الحالة
+            if (allGood) {
+                status.className = 'status-box success';
+                status.innerHTML = '✅ النطاق مربوط بنجاح!';
+            } else {
+                status.className = 'status-box warning';
+                status.innerHTML = '⏳ في انتظار تحديث DNS...';
+            }
+            
+            // رسالة تذكير
+            setTimeout(() => {
+                if (!allGood) {
+                    alert('تذكير: بعد تحديث Nameservers، استخدم الصفحة الأونلاين للمتابعة:\nhttps://delivery-form-server.vercel.app/dns-check.html');
+                }
+            }, 2000);
+        }
+        
+        // فحص تلقائي عند التحميل
+        window.onload = () => {
+            console.log('صفحة فحص DNS المحلية جاهزة');
+            console.log('للفحص الحقيقي، استخدم: https://delivery-form-server.vercel.app/dns-check.html');
+        };
+    </script>
+</body>
+</html>
