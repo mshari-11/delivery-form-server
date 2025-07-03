@@ -3,25 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة الإدارة - First Line</title>
+    <title>لوحة التحكم - إدارة طلبات التسجيل</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #1c1e21;
         }
         
         .container {
             max-width: 1400px;
-            margin: 0 auto;
+            margin: 20px auto;
             background: white;
             border-radius: 20px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
@@ -408,7 +407,292 @@
             transform: translateY(-2px);
         }
         
+        /* نافذة التفاصيل المنبثقة */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 2% auto;
+            padding: 0;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 95vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 25px;
+            border-radius: 20px 20px 0 0;
+            position: relative;
+        }
+        
+        .modal-header h2 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+        
+        .close {
+            position: absolute;
+            right: 25px;
+            top: 25px;
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .close:hover {
+            color: #f0f0f0;
+            transform: scale(1.1);
+        }
+        
+        .modal-body {
+            padding: 30px;
+        }
+        
+        .detail-section {
+            margin-bottom: 25px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .detail-section h4 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .detail-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        
+        .detail-value {
+            color: #333;
+            font-size: 1rem;
+        }
+        
+        .document-preview {
+            background: white;
+            border: 2px dashed #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .document-preview:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+        
+        .document-preview i {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .verification-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        .verification-verified {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .verification-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .verification-failed {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .btn-modal {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 140px;
+            justify-content: center;
+        }
+        
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding: 15px 0 15px 40px;
+            border-left: 2px solid #e9ecef;
+        }
+        
+        .timeline-item:last-child {
+            border-left: none;
+        }
+        
+        .timeline-icon {
+            position: absolute;
+            left: -8px;
+            top: 20px;
+            width: 16px;
+            height: 16px;
+            background: #667eea;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px #667eea;
+        }
+        
+        .timeline-content {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .timeline-date {
+            color: #666;
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+        }
+        
+        .timeline-text {
+            color: #333;
+            font-size: 0.9rem;
+        }
+        
+        /* رسائل النظام */
+        .message-section {
+            background: #fff;
+            border: 1px solid #e9ecef;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .message-input {
+            width: 100%;
+            min-height: 100px;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 14px;
+            resize: vertical;
+        }
+        
+        .message-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .message-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+        
+        .message-type {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .message-type label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        
         @media (max-width: 768px) {
+            .modal-content {
+                width: 95%;
+                margin: 5% auto;
+            }
+            
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn-modal {
+                width: 100%;
+            }
+            
+            .message-actions {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .message-type {
+                justify-content: center;
+            }
+            
             .container {
                 margin: 10px;
                 border-radius: 15px;
@@ -444,6 +728,67 @@
                 overflow-x: auto;
             }
         }
+        
+        /* أنماط أزرار النافذة المنبثقة */
+        .btn-modal.btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .btn-modal.btn-primary:hover {
+            background: linear-gradient(135deg, #5a6fd8, #6b4190);
+            transform: translateY(-2px);
+        }
+        
+        .btn-modal.btn-success {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+        }
+        
+        .btn-modal.btn-success:hover {
+            background: linear-gradient(135deg, #218838, #1ca085);
+            transform: translateY(-2px);
+        }
+        
+        .btn-modal.btn-danger {
+            background: linear-gradient(135deg, #dc3545, #e83e8c);
+            color: white;
+        }
+        
+        .btn-modal.btn-danger:hover {
+            background: linear-gradient(135deg, #c82333, #d61a7a);
+            transform: translateY(-2px);
+        }
+        
+        .btn-modal.btn-warning {
+            background: linear-gradient(135deg, #ffc107, #fd7e14);
+            color: #212529;
+        }
+        
+        .btn-modal.btn-warning:hover {
+            background: linear-gradient(135deg, #e0a800, #dc6502);
+            transform: translateY(-2px);
+        }
+        
+        .btn-modal.btn-info {
+            background: linear-gradient(135deg, #17a2b8, #6f42c1);
+            color: white;
+        }
+        
+        .btn-modal.btn-info:hover {
+            background: linear-gradient(135deg, #138496, #5a2d91);
+            transform: translateY(-2px);
+        }
+        
+        .btn-modal.btn-secondary {
+            background: linear-gradient(135deg, #6c757d, #adb5bd);
+            color: white;
+        }
+        
+        .btn-modal.btn-secondary:hover {
+            background: linear-gradient(135deg, #5a6268, #95a0a7);
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body>
@@ -453,8 +798,8 @@
     
     <div class="container">
         <div class="header">
-            <h1><i class="fas fa-tachometer-alt"></i> لوحة الإدارة الشاملة</h1>
-            <p>إدارة كاملة لنظام تسجيل المندوبين والمتابعة اليومية</p>
+            <h1><i class="fas fa-tachometer-alt"></i> لوحة التحكم - تسجيل المندوبين</h1>
+            <p>إدارة ومتابعة طلبات تسجيل مندوبي التوصيل</p>
         </div>
         
         <div class="nav-links">
@@ -613,6 +958,136 @@
         </div>
     </div>
 
+    <!-- نافذة التفاصيل المنبثقة -->
+    <div id="detailsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">تفاصيل طلب التسجيل</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <!-- معلومات أساسية -->
+                <div class="detail-section">
+                    <h4><i class="fas fa-user"></i> المعلومات الشخصية</h4>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">الاسم الكامل</div>
+                            <div class="detail-value" id="modalName">-</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">رقم الهوية/الإقامة</div>
+                            <div class="detail-value" id="modalId">-</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">رقم الجوال</div>
+                            <div class="detail-value" id="modalPhone">-</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">تاريخ التسجيل</div>
+                            <div class="detail-value" id="modalDate">-</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- حالة التحقق -->
+                <div class="detail-section">
+                    <h4><i class="fas fa-shield-alt"></i> حالة التحقق</h4>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">تحقق الجوال</div>
+                            <div class="detail-value" id="modalPhoneVerified">-</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">تحقق STC Pay</div>
+                            <div class="detail-value" id="modalStcVerified">-</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">تحقق التطبيق</div>
+                            <div class="detail-value" id="modalAppVerified">-</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">حالة الطلب</div>
+                            <div class="detail-value" id="modalStatus">-</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- معلومات التطبيق -->
+                <div class="detail-section">
+                    <h4><i class="fas fa-mobile-alt"></i> معلومات التطبيق</h4>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">نوع التطبيق</div>
+                            <div class="detail-value" id="modalApp">-</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">STC Pay</div>
+                            <div class="detail-value" id="modalStc">-</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- المستندات -->
+                <div class="detail-section">
+                    <h4><i class="fas fa-file-alt"></i> المستندات المرفقة</h4>
+                    <div class="detail-grid" id="documentsGrid">
+                        <!-- سيتم ملء المستندات هنا -->
+                    </div>
+                </div>
+
+                <!-- سجل الأنشطة -->
+                <div class="detail-section">
+                    <h4><i class="fas fa-history"></i> سجل الأنشطة</h4>
+                    <div class="timeline" id="activityTimeline">
+                        <!-- سيتم ملء الأنشطة هنا -->
+                    </div>
+                </div>
+
+                <!-- رسالة إضافية -->
+                <div class="message-section" id="messageSection" style="display: none;">
+                    <h4><i class="fas fa-comment"></i> إرسال رسالة</h4>
+                    <textarea id="messageText" class="message-input" placeholder="اكتب رسالة للمندوب..."></textarea>
+                    <div class="message-actions">
+                        <div class="message-type">
+                            <label>
+                                <input type="radio" name="messageType" value="info" checked>
+                                <i class="fas fa-info-circle" style="color: #007bff;"></i> معلومات
+                            </label>
+                            <label>
+                                <input type="radio" name="messageType" value="warning">
+                                <i class="fas fa-exclamation-triangle" style="color: #ffc107;"></i> تنبيه
+                            </label>
+                            <label>
+                                <input type="radio" name="messageType" value="error">
+                                <i class="fas fa-times-circle" style="color: #dc3545;"></i> خطأ
+                            </label>
+                        </div>
+                        <div>
+                            <button class="btn-modal btn-secondary" onclick="cancelMessage()">إلغاء</button>
+                            <button class="btn-modal btn-primary" onclick="sendMessage()">إرسال</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- أزرار الإجراءات -->
+                <div class="action-buttons">
+                    <button class="btn-modal btn-success" id="approveBtn" onclick="approveRegistration()">
+                        <i class="fas fa-check"></i> موافقة
+                    </button>
+                    <button class="btn-modal btn-danger" id="rejectBtn" onclick="rejectRegistration()">
+                        <i class="fas fa-times"></i> رفض
+                    </button>
+                    <button class="btn-modal btn-warning" id="pendingBtn" onclick="markPending()">
+                        <i class="fas fa-clock"></i> قيد المراجعة
+                    </button>
+                    <button class="btn-modal btn-info" id="messageBtn" onclick="showMessageSection()">
+                        <i class="fas fa-comment"></i> إرسال رسالة
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // متغيرات عامة
         let currentStats = {
@@ -698,45 +1173,86 @@
                     name: 'أحمد محمد العلي',
                     idNumber: '1234567890',
                     phone: '0501234567',
+                    stcPay: '0501234567',
                     app: 'هنقرستيشن',
                     status: 'pending',
-                    date: '2025/07/03'
+                    date: '2025/07/03',
+                    time: '14:30',
+                    isPhoneVerified: true,
+                    documents: {
+                        idCopy: 'متوفر',
+                        licenseCopy: 'متوفر',
+                        facePhoto: 'متوفر'
+                    }
                 },
                 {
                     id: 'FL-2025-002',
                     name: 'فاطمة سعد الشهري',
                     idNumber: '1987654321',
                     phone: '0507654321',
+                    stcPay: '0507654321',
                     app: 'جاهز',
                     status: 'approved',
-                    date: '2025/07/02'
+                    date: '2025/07/02',
+                    time: '10:15',
+                    isPhoneVerified: true,
+                    documents: {
+                        idCopy: 'متوفر',
+                        licenseCopy: 'متوفر',
+                        facePhoto: 'متوفر'
+                    }
                 },
                 {
                     id: 'FL-2025-003',
                     name: 'خالد عبدالله القحطاني',
                     idNumber: '1122334455',
                     phone: '0551122334',
+                    stcPay: '0551122334',
                     app: 'مرسول',
                     status: 'rejected',
-                    date: '2025/07/01'
+                    date: '2025/07/01',
+                    time: '16:45',
+                    isPhoneVerified: true,
+                    documents: {
+                        idCopy: 'متوفر',
+                        licenseCopy: 'غير واضح',
+                        facePhoto: 'متوفر'
+                    },
+                    rejectionReason: 'صورة رخصة القيادة غير واضحة'
                 },
                 {
                     id: 'FL-2025-004',
                     name: 'نورا أحمد الزهراني',
                     idNumber: '2233445566',
                     phone: '0562233445',
+                    stcPay: '0562233445',
                     app: 'كريم',
-                    status: 'approved',
-                    date: '2025/06/30'
+                    status: 'pending',
+                    date: '2025/07/03',
+                    time: '09:20',
+                    isPhoneVerified: true,
+                    documents: {
+                        idCopy: 'متوفر',
+                        licenseCopy: 'متوفر',
+                        facePhoto: 'متوفر'
+                    }
                 },
                 {
                     id: 'FL-2025-005',
                     name: 'محمد علي المطيري',
                     idNumber: '3344556677',
                     phone: '0573344556',
+                    stcPay: '0573344556',
                     app: 'أوبر',
                     status: 'pending',
-                    date: '2025/06/29'
+                    date: '2025/07/03',
+                    time: '11:05',
+                    isPhoneVerified: false,
+                    documents: {
+                        idCopy: 'متوفر',
+                        licenseCopy: 'متوفر',
+                        facePhoto: 'مفقود'
+                    }
                 }
             ];
             
@@ -753,27 +1269,49 @@
                 const statusText = reg.status === 'pending' ? 'في الانتظار' : 
                                  reg.status === 'approved' ? 'موافق عليها' : 'مرفوضة';
                 
+                const phoneIcon = reg.isPhoneVerified ? 
+                    '<i class="fas fa-check-circle" style="color: #28a745;" title="تم التحقق من الجوال"></i>' :
+                    '<i class="fas fa-exclamation-triangle" style="color: #ffc107;" title="لم يتم التحقق من الجوال"></i>';
+                
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td><strong>${reg.id}</strong></td>
-                    <td>${reg.name}</td>
+                    <td>
+                        ${reg.name}
+                        <br><small style="color: #666;">${reg.time}</small>
+                    </td>
                     <td>${reg.idNumber}</td>
-                    <td>${reg.phone}</td>
-                    <td>${reg.app}</td>
+                    <td>
+                        ${reg.phone} ${phoneIcon}
+                        <br><small style="color: #666;">STC: ${reg.stcPay}</small>
+                    </td>
+                    <td>
+                        <span style="padding: 4px 8px; background: #e3f2fd; color: #1565c0; border-radius: 4px; font-size: 12px;">
+                            ${reg.app}
+                        </span>
+                    </td>
                     <td><span class="status-badge ${statusClass}">${statusText}</span></td>
                     <td>${reg.date}</td>
                     <td>
-                        <button class="btn btn-primary" onclick="viewDetails('${reg.id}')" style="margin: 2px;">
-                            <i class="fas fa-eye"></i>
+                        <button class="btn btn-primary" onclick="viewDetails('${reg.id}')" style="margin: 2px; padding: 6px 12px; font-size: 12px;">
+                            <i class="fas fa-eye"></i> عرض
                         </button>
                         ${reg.status === 'pending' ? `
-                        <button class="btn btn-success" onclick="approveRegistration('${reg.id}')" style="margin: 2px;">
-                            <i class="fas fa-check"></i>
+                        <button class="btn btn-success" onclick="approveRegistration('${reg.id}')" style="margin: 2px; padding: 6px 12px; font-size: 12px;">
+                            <i class="fas fa-check"></i> موافقة
                         </button>
-                        <button class="btn btn-danger" onclick="rejectRegistration('${reg.id}')" style="margin: 2px;">
-                            <i class="fas fa-times"></i>
+                        <button class="btn btn-danger" onclick="rejectRegistration('${reg.id}')" style="margin: 2px; padding: 6px 12px; font-size: 12px;">
+                            <i class="fas fa-times"></i> رفض
                         </button>
-                        ` : ''}
+                        ` : reg.status === 'rejected' ? `
+                        <button class="btn btn-warning" onclick="reviewAgain('${reg.id}')" style="margin: 2px; padding: 6px 12px; font-size: 12px;">
+                            <i class="fas fa-redo"></i> مراجعة
+                        </button>
+                        ` : `
+                        <button class="btn btn-secondary" onclick="sendMessage('${reg.id}')" style="margin: 2px; padding: 6px 12px; font-size: 12px;">
+                            <i class="fas fa-message"></i> رسالة
+                        </button>
+                        `}
                     </td>
                 `;
                 tbody.appendChild(row);
@@ -879,8 +1417,336 @@
             loadInitialData();
         }
         
+        // متغيرات النافذة المنبثقة
+        let currentRegistration = null;
+        let registrations = [];
+        const modal = document.getElementById('detailsModal');
+        const modalTitle = document.getElementById('modalTitle');
+
         function viewDetails(registrationId) {
-            showAlert(`عرض تفاصيل كاملة للتسجيل: ${registrationId}`, 'success');
+            const registration = getSampleData().find(reg => reg.id === registrationId);
+            if (!registration) {
+                showAlert('لم يتم العثور على التسجيل', 'error');
+                return;
+            }
+            
+            currentRegistration = registration;
+            
+            // تحديث العنوان
+            modalTitle.textContent = `تفاصيل التسجيل - ${registration.name}`;
+            
+            // ملء المعلومات الأساسية
+            document.getElementById('modalName').textContent = registration.name;
+            document.getElementById('modalId').textContent = registration.idNumber;
+            document.getElementById('modalPhone').textContent = registration.phone;
+            document.getElementById('modalDate').textContent = `${registration.date} في ${registration.time}`;
+            
+            // حالة التحقق
+            document.getElementById('modalPhoneVerified').innerHTML = getVerificationBadge(registration.isPhoneVerified);
+            document.getElementById('modalStcVerified').innerHTML = getVerificationBadge(registration.isStcVerified || true);
+            document.getElementById('modalAppVerified').innerHTML = getVerificationBadge(registration.isAppVerified || true);
+            document.getElementById('modalStatus').innerHTML = getStatusBadge(registration.status);
+            
+            // معلومات التطبيق
+            document.getElementById('modalApp').textContent = registration.app;
+            document.getElementById('modalStc').textContent = registration.stcPay;
+            
+            // عرض المستندات
+            displayDocuments(registration.documents);
+            
+            // عرض سجل الأنشطة
+            displayActivityTimeline(registration);
+            
+            // إخفاء قسم الرسائل
+            document.getElementById('messageSection').style.display = 'none';
+            
+            // إظهار النافذة المنبثقة
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // عرض المستندات
+        function displayDocuments(documents) {
+            const documentsGrid = document.getElementById('documentsGrid');
+            documentsGrid.innerHTML = '';
+            
+            const documentTypes = [
+                { key: 'idCopy', name: 'صورة الهوية', icon: 'fas fa-id-card' },
+                { key: 'licenseCopy', name: 'رخصة القيادة', icon: 'fas fa-car' },
+                { key: 'facePhoto', name: 'الصورة الشخصية', icon: 'fas fa-user-circle' }
+            ];
+            
+            documentTypes.forEach(docType => {
+                const status = documents[docType.key];
+                const isAvailable = status === 'متوفر';
+                
+                const docElement = document.createElement('div');
+                docElement.className = 'document-preview';
+                docElement.innerHTML = `
+                    <i class="${docType.icon}" style="color: ${isAvailable ? '#28a745' : '#dc3545'};"></i>
+                    <h5 style="margin: 10px 0 5px; color: #333;">${docType.name}</h5>
+                    <p style="color: ${isAvailable ? '#28a745' : '#dc3545'}; font-weight: 600;">${status}</p>
+                    ${isAvailable ? '<small style="color: #666;">انقر للعرض</small>' : ''}
+                `;
+                
+                if (isAvailable) {
+                    docElement.onclick = () => previewDocument(docType.name);
+                }
+                
+                documentsGrid.appendChild(docElement);
+            });
+        }
+        
+        // عرض سجل الأنشطة
+        function displayActivityTimeline(registration) {
+            const timeline = document.getElementById('activityTimeline');
+            timeline.innerHTML = '';
+            
+            const activities = [
+                { date: registration.date, text: 'تم تسجيل الطلب', type: 'created' },
+                { date: registration.date, text: 'تم التحقق من رقم الجوال', type: 'verified' },
+                { date: registration.date, text: 'تم رفع المستندات', type: 'documents' }
+            ];
+            
+            if (registration.status === 'approved') {
+                activities.push({ date: registration.date, text: 'تمت الموافقة على الطلب', type: 'approved' });
+            } else if (registration.status === 'rejected') {
+                activities.push({ date: registration.date, text: 'تم رفض الطلب', type: 'rejected' });
+            }
+            
+            activities.forEach((activity, index) => {
+                const activityElement = document.createElement('div');
+                activityElement.className = 'timeline-item';
+                activityElement.innerHTML = `
+                    <div class="timeline-icon"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">${activity.date}</div>
+                        <div class="timeline-text">${activity.text}</div>
+                    </div>
+                `;
+                timeline.appendChild(activityElement);
+            });
+        }
+        
+        // معاينة المستند
+        function previewDocument(docName) {
+            alert(`معاينة ${docName}\n\nهذه ميزة تجريبية. في النظام الحقيقي ستفتح المستند للعرض.`);
+        }
+        
+        // إنشاء شارة التحقق
+        function getVerificationBadge(isVerified) {
+            if (isVerified) {
+                return `<span class="verification-status verification-verified">
+                    <i class="fas fa-check-circle"></i> تم التحقق
+                </span>`;
+            } else {
+                return `<span class="verification-status verification-pending">
+                    <i class="fas fa-clock"></i> في الانتظار
+                </span>`;
+            }
+        }
+        
+        // إنشاء شارة الحالة
+        function getStatusBadge(status) {
+            const statusConfig = {
+                pending: { class: 'verification-pending', icon: 'fas fa-clock', text: 'قيد المراجعة' },
+                approved: { class: 'verification-verified', icon: 'fas fa-check-circle', text: 'مُوافق عليه' },
+                rejected: { class: 'verification-failed', icon: 'fas fa-times-circle', text: 'مرفوض' }
+            };
+            
+            const config = statusConfig[status] || statusConfig.pending;
+            return `<span class="verification-status ${config.class}">
+                <i class="${config.icon}"></i> ${config.text}
+            </span>`;
+        }
+        
+        // موافقة على التسجيل
+        function approveRegistration() {
+            if (!currentRegistration) return;
+            
+            if (confirm(`هل أنت متأكد من الموافقة على طلب ${currentRegistration.name}؟`)) {
+                currentRegistration.status = 'approved';
+                
+                showAlert('تم قبول الطلب بنجاح!', 'success');
+                loadSampleData(); // تحديث العرض
+                updateStatistics();
+                closeModal();
+                
+                // إشعار تجريبي
+                setTimeout(() => {
+                    alert(`تم إرسال إشعار الموافقة إلى ${currentRegistration.phone}`);
+                }, 1000);
+            }
+        }
+        
+        // رفض التسجيل
+        function rejectRegistration() {
+            if (!currentRegistration) return;
+            
+            const reason = prompt('سبب الرفض (اختياري):');
+            if (reason !== null) {
+                currentRegistration.status = 'rejected';
+                if (reason.trim()) {
+                    currentRegistration.rejectionReason = reason.trim();
+                }
+                
+                showAlert('تم رفض الطلب.', 'error');
+                loadSampleData(); // تحديث العرض
+                updateStatistics();
+                closeModal();
+                
+                // إشعار تجريبي
+                setTimeout(() => {
+                    alert(`تم إرسال إشعار الرفض إلى ${currentRegistration.phone}`);
+                }, 1000);
+            }
+        }
+        
+        // تحديد حالة قيد المراجعة
+        function markPending() {
+            if (!currentRegistration) return;
+            
+            currentRegistration.status = 'pending';
+            showAlert('تم تحديد الطلب كـ "قيد المراجعة".', 'warning');
+            loadSampleData(); // تحديث العرض
+            updateStatistics();
+            closeModal();
+        }
+        
+        // إظهار قسم الرسائل
+        function showMessageSection() {
+            const messageSection = document.getElementById('messageSection');
+            messageSection.style.display = 'block';
+            document.getElementById('messageText').focus();
+        }
+        
+        // إلغاء الرسالة
+        function cancelMessage() {
+            const messageSection = document.getElementById('messageSection');
+            messageSection.style.display = 'none';
+            document.getElementById('messageText').value = '';
+        }
+        
+        // إرسال رسالة
+        function sendMessage() {
+            const messageText = document.getElementById('messageText').value.trim();
+            const messageType = document.querySelector('input[name="messageType"]:checked').value;
+            
+            if (!messageText) {
+                alert('يرجى كتابة نص الرسالة');
+                return;
+            }
+            
+            if (!currentRegistration) return;
+            
+            // محاكاة إرسال الرسالة
+            const typeLabels = {
+                info: 'معلومات',
+                warning: 'تنبيه',
+                error: 'خطأ'
+            };
+            
+            alert(`تم إرسال رسالة "${typeLabels[messageType]}" إلى ${currentRegistration.name}:\n\n${messageText}`);
+            
+            cancelMessage();
+        }
+        
+        // إغلاق النافذة المنبثقة
+        function closeModal() {
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
+            currentRegistration = null;
+        }
+        
+        function getSampleData() {
+            return [
+                {
+                    id: 'FL-2025-001',
+                    name: 'أحمد محمد العلي',
+                    idNumber: '1234567890',
+                    phone: '0501234567',
+                    stcPay: '0501234567',
+                    app: 'هنقرستيشن',
+                    status: 'pending',
+                    date: '2025/07/03',
+                    time: '14:30',
+                    isPhoneVerified: true,
+                    documents: {
+                        idCopy: 'متوفر',
+                        licenseCopy: 'متوفر',
+                        facePhoto: 'متوفر'
+                    }
+                },
+                {
+                    id: 'FL-2025-002',
+                    name: 'فاطمة سعد الشهري',
+                    idNumber: '1987654321',
+                    phone: '0507654321',
+                    stcPay: '0507654321',
+                    app: 'جاهز',
+                    status: 'approved',
+                    date: '2025/07/02',
+                    time: '10:15',
+                    isPhoneVerified: true,
+                    documents: {
+                        idCopy: 'متوفر',
+                        licenseCopy: 'متوفر',
+                        facePhoto: 'متوفر'
+                    }
+                },
+                {
+                    id: 'FL-2025-003',
+                    name: 'خالد عبدالله القحطاني',
+                    idNumber: '1122334455',
+                    phone: '0551122334',
+                    stcPay: '0551122334',
+                    app: 'مرسول',
+                    status: 'rejected',
+                    date: '2025/07/01',
+                    time: '16:45',
+                    isPhoneVerified: true,
+                    documents: {
+                        idCopy: 'متوفر',
+                        licenseCopy: 'غير واضح',
+                        facePhoto: 'متوفر'
+                    },
+                    rejectionReason: 'صورة رخصة القيادة غير واضحة'
+                },
+                {
+                    id: 'FL-2025-004',
+                    name: 'نورا أحمد الزهراني',
+                    idNumber: '2233445566',
+                    phone: '0562233445',
+                    stcPay: '0562233445',
+                    app: 'كريم',
+                    status: 'pending',
+                    date: '2025/07/03',
+                    time: '09:20',
+                    isPhoneVerified: true,
+                    documents: {
+                        idCopy: 'متوفر',
+                        licenseCopy: 'متوفر',
+                        facePhoto: 'متوفر'
+                    }
+                },
+                {
+                    id: 'FL-2025-005',
+                    name: 'محمد علي المطيري',
+                    idNumber: '3344556677',
+                    phone: '0573344556',
+                    stcPay: '0573344556',
+                    app: 'أوبر',
+                    status: 'pending',
+                    date: '2025/07/03',
+                    time: '11:05',
+                    isPhoneVerified: false,
+                    documents: {
+                        idCopy: 'متوفر',
+                        licenseCopy: 'متوفر',
+                        facePhoto: 'مفقود'
+                    }
+                }
+            ];
         }
         
         function approveRegistration(registrationId) {
@@ -950,6 +1816,26 @@
             setTimeout(() => {
                 document.body.style.opacity = '1';
             }, 100);
+        });
+        
+        // إعداد أحداث النافذة المنبثقة
+        document.addEventListener('DOMContentLoaded', function() {
+            // إغلاق بالنقر على X
+            document.querySelector('.close').onclick = closeModal;
+            
+            // إغلاق بالنقر خارج النافذة
+            window.onclick = function(event) {
+                if (event.target === modal) {
+                    closeModal();
+                }
+            };
+            
+            // إغلاق بمفتاح Escape
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modal.style.display === 'block') {
+                    closeModal();
+                }
+            });
         });
         
         // تحسين البحث مع Enter

@@ -1,0 +1,31 @@
+# 🚀 أمر واحد لدفع جميع التغييرات
+
+## 📋 انسخ هذا الأمر بالكامل:
+
+git push https://YOUR_GITHUB_TOKEN@github.com/mshari-11/delivery-form-server.git main
+
+## 📝 تعليمات الاستخدام:
+
+1. استبدل YOUR_GITHUB_TOKEN بالـ Personal Access Token الخاص بك
+2. يجب أن يبدأ الـ token بـ ghp_
+3. انسخ الأمر كاملاً والصقه في Terminal/Git Bash
+
+## 💡 مثال:
+
+إذا كان token الخاص بك: ghp_AbCdEfGhIjKlMnOpQrStUvWxYz123456
+
+سيصبح الأمر:
+git push https://ghp_AbCdEfGhIjKlMnOpQrStUvWxYz123456@github.com/mshari-11/delivery-form-server.git main
+
+## ⚡ أمر بديل (لحفظ الـ token):
+
+git remote set-url origin https://YOUR_GITHUB_TOKEN@github.com/mshari-11/delivery-form-server.git && git push origin main
+
+## 🎯 للحصول على Token:
+1. https://github.com/settings/tokens
+2. Generate new token (classic)
+3. اختر: repo
+4. انسخ الـ token
+
+---
+جاهز للنسخ واللصق! 🚀
